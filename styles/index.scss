@@ -407,8 +407,8 @@ body {
             margin-right: toRem(5);
         }
     }
-    a.pagination__prev-page,
-    a.pagination__next-page {
+    .pagination__prev-page,
+    .pagination__next-page {
         display: inline-block;
         color: $pagination-button-color;
         background-color: $pagination-button-background;
@@ -430,10 +430,10 @@ body {
             color: $search-form-color;
         }
     }
-    a:first-of-type {
+    button:first-of-type {
         margin-left: auto;
     }
-    a:last-of-type {
+    button:last-of-type {
         margin-right: 0;
     }
 }
