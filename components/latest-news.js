@@ -4,7 +4,7 @@ import Pagination from "./pagination";
 
 export const postsPerPage = 6;
 
-function LatestNews({ posts, error, isLoaded }) {
+function LatestNews({ posts }) {
     const [currentPage, setCurrentPage] = useState(1);
 
     const lastPageIndex = currentPage * postsPerPage;
