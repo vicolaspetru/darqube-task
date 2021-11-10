@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 function ArticleItem({ article, isLatestResearch }) {
     const cutSummaryText = (text, indexEnd = 69, ellipsis = "...") => {
         // 69 is just a number :)
@@ -21,6 +23,14 @@ function ArticleItem({ article, isLatestResearch }) {
         const minute = date.getMinutes();
         return `${year}-${month}-${day} ${hour}:${minute}`;
     };
+
+    console.log(article.id);
+
+    const isAddedToBookmarks = article.id === 64665122; // TODO: refactor code here
+
+    const bookmarkClasses = classNames("article__add-to-bookmark", {
+        "is-added-to-bookmarks": isAddedToBookmarks,
+    });
 
     return (
         <article style={{ backgroundImage: `url(${article.image})` }}>
@@ -48,6 +58,7 @@ function ArticleItem({ article, isLatestResearch }) {
             >
                 {isLatestResearch && (
                     <span className="article__read-more">
+                        <ion-icon name="arrow-forward-circle-outline"></ion-icon>
                         Read the research
                     </span>
                 )}
@@ -56,9 +67,19 @@ function ArticleItem({ article, isLatestResearch }) {
                 </time>
                 <button
                     type="button"
-                    className="article__add-to-bookmark is-added-to-bookmarks"
-                    title="Remove from Bookmarks"
-                ></button>
+                    className={bookmarkClasses}
+                    title={
+                        isAddedToBookmarks
+                            ? "Remove from Bookmarks"
+                            : "Add to Bookmarks"
+                    }
+                >
+                    {isAddedToBookmarks ? (
+                        <ion-icon name="bookmark"></ion-icon>
+                    ) : (
+                        <ion-icon name="bookmark-outline"></ion-icon>
+                    )}
+                </button>
             </a>
         </article>
     );

@@ -1,38 +1,82 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMainLayout } from "../context/main-layout/context";
 
 function SearchForm({ placeholder }) {
+    const inputRef = useRef(null);
+    const clearInputRef = useRef(null);
     const [filteredPosts, setFilteredPosts] = useState([]);
+    const [enteredValue, setEnteredValue] = useState("");
     const { posts } = useMainLayout();
 
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                clearInputRef.current &&
+                clearInputRef.current.contains(event.target)
+            ) {
+                setEnteredValue("");
+            }
+            if (inputRef.current && !inputRef.current.contains(event.target)) {
+                setFilteredPosts([]);
+            } else {
+                searchHandler(event);
+            }
+        }
+
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [inputRef]);
+
     const searchHandler = (event) => {
-        const searchKeyword = event.target.value;
+        const searchValue = event.target.value;
+        const searchValuesArray = searchValue.split(" ");
         const postsFilter = posts.filter((post) => {
             if (
-                post.headline
-                    .toLowerCase()
-                    .includes(searchKeyword.toLowerCase()) ||
-                post.summary.toLowerCase().includes(searchKeyword.toLowerCase())
+                searchValuesArray.every((keyword) =>
+                    post.headline.toLowerCase().includes(keyword.toLowerCase())
+                ) ||
+                searchValuesArray.every((keyword) =>
+                    post.summary.toLowerCase().includes(keyword.toLowerCase())
+                )
             ) {
                 return post;
             }
         });
-        if (searchKeyword === "") {
+        if (searchValue === "") {
             setFilteredPosts([]);
         } else {
+            setEnteredValue(searchValue);
             setFilteredPosts(postsFilter);
         }
     };
+
     return (
         <div id="search-form">
             <label htmlFor="search-form__input">
-                <span className="search-form__input-icon"></span>
+                <span className="search-form__input-icon">
+                    <ion-icon name="search"></ion-icon>
+                </span>
+                {enteredValue !== "" && (
+                    <span
+                        className="search-form__input-clear"
+                        ref={clearInputRef}
+                        title="Clear input"
+                    >
+                        <ion-icon name="close"></ion-icon>
+                    </span>
+                )}
                 <input
                     type="text"
                     placeholder={placeholder}
                     id="search-form__input"
                     className="search-form__input"
                     onChange={searchHandler}
+                    ref={inputRef}
+                    value={enteredValue}
                 />
             </label>
             {filteredPosts.length !== 0 && (
@@ -46,8 +90,16 @@ function SearchForm({ placeholder }) {
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <span className="post-thumbnail" style={{backgroundImage: `url(${post.image})`}}></span>
-                                <h3 className="post-title">{post.headline}</h3>
+                                <span
+                                    className="post-thumbnail"
+                                    style={{
+                                        backgroundImage: `url(${post.image})`,
+                                    }}
+                                ></span>
+                                <h3 className="post-title">
+                                    {post.headline}
+                                    <ion-icon name="open-outline"></ion-icon>
+                                </h3>
                             </a>
                         );
                     })}
