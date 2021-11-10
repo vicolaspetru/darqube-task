@@ -6,7 +6,7 @@ function Header() {
 		<header id="header">
 			<div className="inner-wrap">
 				<Navigation/>
-				<SearchForm />
+				<SearchForm placeholder="Search" />
 			</div>
 		</header>
     );

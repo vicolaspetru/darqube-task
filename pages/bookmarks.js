@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { MainLayout } from "../components/main-layout";
 import Posts from "../components/posts";
+import { MainLayoutProvider } from '../context/main-layout';
 
 function Bookmarks() {
     return (
@@ -8,11 +8,11 @@ function Bookmarks() {
             <Head>
                 <title>Bookmarks</title>
             </Head>
-            <MainLayout>
+            <MainLayoutProvider>
                 <div id="research-articles">
                     <div className="inner-wrap">Here</div>
                 </div>
-            </MainLayout>
+            </MainLayoutProvider>
         </>
     );
 }

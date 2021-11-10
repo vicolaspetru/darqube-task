@@ -1,8 +1,7 @@
 import Head from "next/head";
-import { MainLayout } from "./main-layout";
 import { postsPerPage } from "./latest-news";
 import ArticleItemSkeleton from "../misc/article-item-skeleton";
-import { useRef } from "react";
+import { MainLayoutProvider } from '../context/main-layout';
 
 export default function SkeletonLoading() {
     const articlesSkeleton = [];
@@ -15,7 +14,7 @@ export default function SkeletonLoading() {
             <Head>
                 <title>Loading posts...</title>
             </Head>
-            <MainLayout>
+            <MainLayoutProvider>
                 <div id="research-articles">
                     <div className="inner-wrap">
                         <aside id="latest-research">
@@ -24,7 +23,7 @@ export default function SkeletonLoading() {
                         <div id="latest-news">{articlesSkeleton}</div>
                     </div>
                 </div>
-            </MainLayout>
+                </MainLayoutProvider>
         </>
     );
 }

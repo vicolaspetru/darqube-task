@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { MainLayout } from "../components/main-layout";
+import { MainLayoutProvider } from '../context/main-layout';
 import classNames from "../styles/error.module.scss";
 
 export default function Error() {
     return (
-        <MainLayout>
+        <MainLayoutProvider>
             <div id="page-404">
                 <div className={`inner-wrap ${classNames["inner-wrap"]}`}>
                     <h1 className={classNames["page-title"]}>404</h1>
@@ -18,6 +18,6 @@ export default function Error() {
                     </Link>
                 </div>
             </div>
-        </MainLayout>
+        </MainLayoutProvider>
     );
 }

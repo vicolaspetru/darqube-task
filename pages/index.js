@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { MainLayout } from "../components/main-layout";
+import { MainLayoutProvider } from '../context/main-layout';
 import Posts from "../components/posts";
 
 function Home({ posts }) {
@@ -8,13 +8,13 @@ function Home({ posts }) {
             <Head>
                 <title>Welcome to Apple latest news</title>
             </Head>
-            <MainLayout>
+            <MainLayoutProvider posts={posts}>
                 <div id="research-articles">
                     <div className="inner-wrap">
-                        <Posts posts={posts} />
+                        <Posts/>
                     </div>
                 </div>
-            </MainLayout>
+            </MainLayoutProvider>
         </>
     );
 }
