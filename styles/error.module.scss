@@ -1,0 +1,38 @@
+@import './mixins.scss';
+@import './variables.scss';
+
+.inner-wrap {
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+.page-title {
+	font-size: toRem(120);
+	font-weight: $font-weight-bold;
+	margin-top: toRem(100);
+}
+.page-description {
+	font-size: toRem(22);
+	margin-bottom: toRem(50);
+}
+.page-button {
+	display: inline-block;
+	color: $pagination-button-color;
+	background-color: $pagination-button-background;
+	text-transform: uppercase;
+	font-size: toRem(16);
+	font-weight: $font-weight-bold;
+	padding: 15px 30px;
+	border-radius: 30px;
+	text-align: center;
+	border: none;
+	cursor: pointer;
+	margin-right: toRem(10);
+	text-decoration: none;
+	transition: color 0.15s ease-in, background-color 0.15s ease-in;
+
+	&:hover {
+		background-color: $search-form-background;
+		color: $search-form-color;
+	}
+}

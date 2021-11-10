@@ -1,0 +1,33 @@
+$inner-wrap-width: 1440px;
+
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+$background-color: #242525;
+$text-color: #ffffff;
+$main-font-family: 'Ubuntu';
+$main-font-size: 16px;
+$main-font-weight: $font-weight-regular;
+
+$nav-menu-font-family: $main-font-family;
+$nav-menu-font-size: toRem(28);
+$nav-menu-font-weight: $font-weight-bold;
+$nav-menu-color: #ffffff;
+
+$search-form-background: #191818;
+$search-form-color: #ffffff;
+
+$article-padding-left-right: 30px;
+$article-padding-top-bottom: 30px;
+$article-space-between: 10px;
+$article-title-font-size: toRem(24);
+$article-summary-font-size: toRem(14);
+$article-footer-font-size: toRem(12);
+$article-content-color: #ffffff;
+
+$pagination-button-color: #ffffff;
+$pagination-button-background: #3C3C3C;
+
+$loading-background-color: #ffffff;
