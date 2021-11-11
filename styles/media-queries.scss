@@ -2,17 +2,11 @@
     #latest-news {
         article {
             margin: $article-space-between;
-            flex: 1 1
+            flex: 0 1
                 calc(
                     (100% / 2) - (#{$article-padding-left-right} * 2) -
                         (#{$article-space-between} * 2)
                 );
-            &:nth-child(2n + 1) {
-                margin-left: 0;
-            }
-            &:nth-child(2n) {
-                margin-right: 0;
-            }
         }
     }
 }
@@ -20,23 +14,11 @@
 @media screen and (min-width: 1140px) {
     #latest-news {
         article {
-            flex: 1 1
+            flex: 0 1
                 calc(
                     (100% / 3) - (#{$article-padding-left-right} * 2) -
                         (#{$article-space-between} * 2)
                 );
-            &:nth-child(2n + 1) {
-                margin-left: $article-space-between;
-            }
-            &:nth-child(2n) {
-                margin-right: $article-space-between;
-            }
-            &:nth-child(3n + 1) {
-                margin-left: 0;
-            }
-            &:nth-child(3n) {
-                margin-right: 0;
-            }
         }
     }
 }

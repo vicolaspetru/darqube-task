@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "../reducers/pagination/actions";
@@ -21,8 +22,12 @@ function LatestNews() {
         dispatch(setLatestPosts(posts));
     }, [posts]);
 
+    const classes = classnames({
+        "has-no-posts-items": currentPagePosts.length === 0,
+    });
+
     return (
-        <div id="latest-news">
+        <div id="latest-news" className={classes}>
             {currentPagePosts.map((post) => (
                 <ArticleItem key={post.id} article={post} />
             ))}
