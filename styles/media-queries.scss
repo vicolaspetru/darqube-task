@@ -1,4 +1,4 @@
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 792px) {
     #latest-news {
         article {
             margin: $article-space-between;
@@ -36,5 +36,32 @@
     }
 }
 
-@media screen and (max-width: 792px) {
+@media screen and (max-width: 791px) {
+    .inner-wrap {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .content-wrapper {
+        flex: 1 1 100%;
+    }
+    #latest-research {
+        flex: 1 1 100%;
+        article {
+            margin: 0;
+        }
+    }
+    #latest-news {
+        flex-direction: column;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #research-articles {
+        article {
+            margin-bottom: calc(#{$article-space-between} * 2);
+            height: 425px;
+            &:hover {
+                transform: none;
+            }
+        }
+    }
 }
