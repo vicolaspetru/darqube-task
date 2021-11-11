@@ -1,11 +1,13 @@
 import Head from "next/head";
-import { defaultState } from "../reducers/pagination/constants";
 import ArticleItemSkeleton from "../misc/article-item-skeleton";
 import { MainLayoutProvider } from "../context/main-layout";
+import { useSelector } from "react-redux";
 
 export default function SkeletonLoading() {
+    const postsPerPage = useSelector((state) => state.pagination.postsPerPage);
     const articlesSkeleton = [];
-    for (let i = 1; i <= defaultState.postsPerPage; i++) {
+
+    for (let i = 1; i <= postsPerPage; i++) {
         articlesSkeleton.push(<ArticleItemSkeleton key={i} />);
     }
 

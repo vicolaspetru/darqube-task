@@ -1,4 +1,3 @@
-import { setLatestPosts } from "../posts/actions";
 import {
     SET_CURRENT_PAGE,
     SET_CURRENT_PAGE_POSTS,
