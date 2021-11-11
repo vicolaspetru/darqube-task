@@ -46,7 +46,7 @@ function Pagination({ posts }) {
             {totalPages > 0 && (
                 <span className="pagination__current-page">
                     <strong>{`${postsCount.first}-${postsCount.last}`}</strong>{" "}
-                    out of {totalPages}
+                    out of {totalPosts}
                 </span>
             )}
             {currentPage > 1 && (
