@@ -1,9 +1,10 @@
 import Head from "next/head";
 import { MainLayoutProvider } from "../context/main-layout";
-import Posts from "../components/posts";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setPosts } from "../reducers/posts/actions";
+import LatestResearch from "../components/latest-research";
+import LatestNews from "../components/latest-news";
 
 function Home({ posts }) {
     const dispatch = useDispatch();
@@ -17,10 +18,11 @@ function Home({ posts }) {
             <Head>
                 <title>Welcome to Apple latest news</title>
             </Head>
-            <MainLayoutProvider posts={posts}>
+            <MainLayoutProvider>
                 <div id="research-articles">
                     <div className="inner-wrap">
-                        <Posts />
+                        <LatestResearch />
+                        <LatestNews />
                     </div>
                 </div>
             </MainLayoutProvider>

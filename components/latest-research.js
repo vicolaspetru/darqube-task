@@ -15,11 +15,7 @@ function LatestResearch() {
     return (
         <aside id="latest-research">
             {latestResearch.map((post) => (
-                <ArticleItem
-                    key={post.id}
-                    article={post}
-                    isLatestResearch={true}
-                />
+                <ArticleItem key={post.id} article={post} />
             ))}
         </aside>
     );

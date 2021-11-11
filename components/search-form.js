@@ -49,9 +49,9 @@ function SearchForm({ placeholder }) {
         if (searchValue === "") {
             setFilteredPosts([]);
         } else {
-            setEnteredValue(searchValue);
             setFilteredPosts(postsFilter);
         }
+        setEnteredValue(searchValue);
     };
 
     return (

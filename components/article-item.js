@@ -1,6 +1,25 @@
 import classNames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    addToBookmarks,
+    removeFromBookmarks,
+} from "../reducers/bookmarks/actions";
 
-function ArticleItem({ article, isLatestResearch }) {
+function ArticleItem({ article }) {
+    const dispatch = useDispatch();
+    const bookmarksPosts = useSelector((state) => state.bookmarks.posts);
+    const latestResearch = useSelector((state) => state.posts.latestResearch);
+
+    const filteredLatestResearch = latestResearch.filter((post) => {
+        return post.id === article.id;
+    });
+    const filteredBookmarks = bookmarksPosts.filter((post) => {
+        return post.id === article.id;
+    });
+
+    const isLatestResearch = filteredLatestResearch.length > 0;
+    const isAddedToBookmarks = filteredBookmarks.length > 0;
+
     const cutSummaryText = (text, indexEnd = 69, ellipsis = "...") => {
         // 69 is just a number :)
         return `${text.substring(0, indexEnd)}${ellipsis}`;
@@ -24,7 +43,13 @@ function ArticleItem({ article, isLatestResearch }) {
         return `${year}-${month}-${day} ${hour}:${minute}`;
     };
 
-    const isAddedToBookmarks = article.id === 64665122; // TODO: refactor code here
+    const clickBookmarksHandler = (event) => {
+        if (event.target.classList.contains("is-added-to-bookmarks")) {
+            dispatch(removeFromBookmarks(article));
+        } else {
+            dispatch(addToBookmarks(article));
+        }
+    };
 
     const bookmarkClasses = classNames("article__add-to-bookmark", {
         "is-added-to-bookmarks": isAddedToBookmarks,
@@ -48,12 +73,7 @@ function ArticleItem({ article, isLatestResearch }) {
             <p className="article__summary">
                 {cutSummaryText(article.summary)}
             </p>
-            <a
-                href={article.url}
-                target="_blank"
-                rel="noreferrer"
-                className="article__footer"
-            >
+            <footer className="article__footer">
                 {isLatestResearch && (
                     <span className="article__read-more">
                         <ion-icon name="arrow-forward-circle-outline"></ion-icon>
@@ -63,22 +83,23 @@ function ArticleItem({ article, isLatestResearch }) {
                 <time dateTime={dateToDateTime(article.datetime)}>
                     {dateToHumanFormat(article.datetime)}
                 </time>
-                <button
-                    type="button"
-                    className={bookmarkClasses}
-                    title={
-                        isAddedToBookmarks
-                            ? "Remove from Bookmarks"
-                            : "Add to Bookmarks"
-                    }
-                >
-                    {isAddedToBookmarks ? (
-                        <ion-icon name="bookmark"></ion-icon>
-                    ) : (
-                        <ion-icon name="bookmark-outline"></ion-icon>
-                    )}
-                </button>
-            </a>
+            </footer>
+            <button
+                type="button"
+                className={bookmarkClasses}
+                title={
+                    isAddedToBookmarks
+                        ? "Remove from Bookmarks"
+                        : "Add to Bookmarks"
+                }
+                onClick={clickBookmarksHandler}
+            >
+                {isAddedToBookmarks ? (
+                    <ion-icon name="bookmark"></ion-icon>
+                ) : (
+                    <ion-icon name="bookmark-outline"></ion-icon>
+                )}
+            </button>
         </article>
     );
 }

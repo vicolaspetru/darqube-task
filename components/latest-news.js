@@ -27,7 +27,10 @@ function LatestNews() {
     }, [currentPage, latestPosts]);
 
     useEffect(() => {
-        dispatch(setTotalPosts(posts));
+        dispatch(setTotalPosts(latestPosts));
+    }, [latestPosts]);
+
+    useEffect(() => {
         dispatch(setLatestPosts(posts));
     }, [posts]);
 

@@ -294,8 +294,6 @@ ion-icon {
             position: relative;
             font-size: $article-footer-font-size;
             color: rgba($article-content-color, 0.5);
-            text-decoration: none;
-            z-index: 3;
 
             .article__read-more {
                 position: relative;
@@ -322,30 +320,6 @@ ion-icon {
                     top: 0;
                 }
             }
-
-            .article__add-to-bookmark {
-                position: absolute;
-                right: 0;
-                top: 50%;
-                transform: translateY(-50%);
-                background-color: transparent;
-                border: none;
-                opacity: 0.5;
-                padding: 7px;
-                padding-right: 0;
-                cursor: pointer;
-                transition: opacity 0.15s ease-in-out;
-
-                &.is-added-to-bookmarks {
-                    opacity: 1;
-                }
-                ion-icon {
-                    --ionicon-stroke-width: 64px;
-                    color: $article-content-color;
-                    font-size: $main-font-size;
-                    font-weight: bold;
-                }
-            }
         }
 
         &:hover {
@@ -356,9 +330,28 @@ ion-icon {
             }
         }
 
-        .article__footer {
-            .article__add-to-bookmark:hover {
+        .article__add-to-bookmark {
+            position: absolute;
+            right: $article-padding-left-right;
+            bottom: calc($article-padding-top-bottom - 12px);
+            background-color: transparent;
+            border: none;
+            opacity: 0.5;
+            padding: 7px;
+            padding-right: 0;
+            cursor: pointer;
+            transition: opacity 0.15s ease-in-out;
+            z-index: 9;
+
+            &.is-added-to-bookmarks,
+            &:hover {
                 opacity: 1;
+            }
+            ion-icon {
+                --ionicon-stroke-width: 64px;
+                color: $article-content-color;
+                font-size: $main-font-size;
+                font-weight: bold;
             }
         }
     }
