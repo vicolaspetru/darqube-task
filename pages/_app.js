@@ -5,6 +5,8 @@ import "../styles/index.scss";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import SkeletonLoading from "../components/skeleton-loading";
+import { Provider } from "react-redux";
+import { store } from "../reducers";
 
 export default function DarqubeTaskApp({ Component, pageProps }) {
     const router = useRouter();
@@ -16,9 +18,9 @@ export default function DarqubeTaskApp({ Component, pageProps }) {
     }, []); // eslint-disable-line
 
     return (
-        <>
+        <Provider store={store}>
             {isLoading && <SkeletonLoading />}
             <Component {...pageProps} />
-        </>
+        </Provider>
     );
 }

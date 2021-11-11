@@ -1,29 +1,50 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    setCurrentPage,
+    setPostsForCurrentPage,
+    setTotalPosts,
+} from "../reducers/pagination/actions";
+import { setLatestPosts } from "../reducers/posts/actions";
 import ArticleItem from "./article-item";
 import Pagination from "./pagination";
 
-export const postsPerPage = 6;
+function LatestNews() {
+    const dispatch = useDispatch();
+    const posts = useSelector((state) => state.posts.posts);
+    const latestPosts = useSelector((state) => state.posts.latestPosts);
+    const currentPagePosts = useSelector(
+        (state) => state.pagination.currentPagePosts
+    );
+    const currentPage = useSelector((state) => state.pagination.currentPage);
+    const totalPosts = useSelector((state) => state.pagination.totalPosts);
+    const postsPerPage = useSelector((state) => state.pagination.postsPerPage);
 
-function LatestNews({ posts }) {
-    const [currentPage, setCurrentPage] = useState(1);
+    useEffect(() => {
+        dispatch(
+            setPostsForCurrentPage(latestPosts, currentPage, postsPerPage)
+        );
+    }, [currentPage, latestPosts]);
 
-    const lastPageIndex = currentPage * postsPerPage;
-    const firstPageIndex = lastPageIndex - postsPerPage;
-    const currentPosts = posts.slice(firstPageIndex, lastPageIndex);
-    const totalPosts = posts.length;
+    useEffect(() => {
+        dispatch(setTotalPosts(posts));
+        dispatch(setLatestPosts(posts));
+    }, [posts]);
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const paginateClickHandler = (pageNumber) => {
+        dispatch(setCurrentPage(pageNumber));
+    };
 
     return (
         <div id="latest-news">
-            {currentPosts.map((post) => (
+            {currentPagePosts.map((post) => (
                 <ArticleItem key={post.id} article={post} />
             ))}
             <Pagination
                 currentPage={currentPage}
                 postsPerPage={postsPerPage}
                 totalPosts={totalPosts}
-                paginate={paginate}
+                onClickButton={paginateClickHandler}
             />
         </div>
     );

@@ -24,8 +24,6 @@ function ArticleItem({ article, isLatestResearch }) {
         return `${year}-${month}-${day} ${hour}:${minute}`;
     };
 
-    console.log(article.id);
-
     const isAddedToBookmarks = article.id === 64665122; // TODO: refactor code here
 
     const bookmarkClasses = classNames("article__add-to-bookmark", {

@@ -1,4 +1,4 @@
-function Pagination({ currentPage, postsPerPage, totalPosts, paginate }) {
+function Pagination({ currentPage, postsPerPage, totalPosts, onClickButton }) {
     const totalPages = Math.ceil(totalPosts / postsPerPage);
     const postsCount = {
         first: postsPerPage * currentPage - postsPerPage + 1,
@@ -24,10 +24,12 @@ function Pagination({ currentPage, postsPerPage, totalPosts, paginate }) {
                 of {totalPages}
             </span>
             {currentPage > 1 && (
-                <PreviousButton onClick={() => paginate(currentPage - 1)} />
+                <PreviousButton
+                    onClick={() => onClickButton(currentPage - 1)}
+                />
             )}
             {postsCount.last < totalPosts && (
-                <NextButton onClick={() => paginate(currentPage + 1)} />
+                <NextButton onClick={() => onClickButton(currentPage + 1)} />
             )}
         </div>
     );

@@ -1,11 +1,11 @@
 import Head from "next/head";
-import { postsPerPage } from "./latest-news";
+import { defaultState } from "../reducers/pagination/constants";
 import ArticleItemSkeleton from "../misc/article-item-skeleton";
-import { MainLayoutProvider } from '../context/main-layout';
+import { MainLayoutProvider } from "../context/main-layout";
 
 export default function SkeletonLoading() {
     const articlesSkeleton = [];
-    for (let i = 1; i <= postsPerPage; i++) {
+    for (let i = 1; i <= defaultState.postsPerPage; i++) {
         articlesSkeleton.push(<ArticleItemSkeleton key={i} />);
     }
 
@@ -23,7 +23,7 @@ export default function SkeletonLoading() {
                         <div id="latest-news">{articlesSkeleton}</div>
                     </div>
                 </div>
-                </MainLayoutProvider>
+            </MainLayoutProvider>
         </>
     );
 }
