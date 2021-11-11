@@ -9,7 +9,20 @@ function SearchForm({ placeholder }) {
     const { posts } = useMainLayout();
 
     useEffect(() => {
+        function preventLinkClick(event) {
+            const parentsNeeded = [
+                "search-form__result-item",
+                "search-form__results",
+            ];
+
+            return parentsNeeded.some((parent) =>
+                event.target.parentNode.classList.contains(parent)
+            );
+        }
         function handleClickOutside(event) {
+            if (preventLinkClick(event)) {
+                return;
+            }
             if (
                 clearInputRef.current &&
                 clearInputRef.current.contains(event.target)
