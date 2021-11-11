@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "../reducers/pagination/actions";
 import ArticleItem from "./article-item";
-import BookmarksSearchForm from "./bookmarks-search-form";
 import Pagination from "./pagination";
 
 export default function BookmarksPosts() {
@@ -25,7 +24,6 @@ export default function BookmarksPosts() {
     return (
         <>
             <div className="content-wrapper">
-                <BookmarksSearchForm placeholder="Search through bookmarks" />
                 <div id="latest-news" className={classes}>
                     {currentPagePosts.map(
                         (post) =>
@@ -34,12 +32,10 @@ export default function BookmarksPosts() {
                             )
                     )}
                     {currentPagePosts.length === 0 && (
-                        <p className="">
-                            There are no one result by your search input.
-                        </p>
+                        <p>No posts found to display</p>
                     )}
-                    <Pagination posts={bookmarksPosts} />
                 </div>
+                <Pagination posts={bookmarksPosts} />
             </div>
         </>
     );

@@ -20,6 +20,10 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+    text-decoration: none;
+}
+
 .inner-wrap {
     max-width: $inner-wrap-width;
     margin: 0 auto;
@@ -63,7 +67,6 @@ ion-icon {
                     font-weight: $nav-menu-font-weight;
                     font-family: $nav-menu-font-family;
                     color: rgba($nav-menu-color, 0.5);
-                    text-decoration: none;
                     transition: color 0.15s ease-in;
                     padding: toRem(10);
 
@@ -123,64 +126,6 @@ ion-icon {
             }
         }
 
-        .search-form__results {
-            position: absolute;
-            top: 100%;
-            margin-top: 5px;
-            right: 0;
-            width: 350px;
-            height: 280px;
-            background-color: $search-form-background;
-            color: $search-form-color;
-            overflow: hidden;
-            overflow-y: auto;
-            z-index: 99;
-            border-radius: 5px;
-            box-shadow: 0 5px 8px rgba(0,0,0,0.5);
-
-            .search-form__result-item {
-                display: flex;
-                align-items: center;
-                padding: toRem(15);
-                color: inherit;
-                text-decoration: none;
-                border-bottom: 1px solid rgba(255,255,255,0.08);
-                transition: background-color .15s ease-in, color .15s ease-in;
-
-                &:hover {
-                    background-color: $background-color;
-                    color: $text-color;
-                }
-
-                .post-thumbnail {
-                    display: block;
-                    flex: 1 0 60px;
-                    width: 60px;
-                    height: 60px;
-                    max-width: 60px;
-                    overflow: hidden;
-                    background-size: cover;
-                    background-repeat: no-repeat;
-                    background-position: center center;
-                }
-                .post-title {
-                    margin-left: toRem(15);
-                    margin-right: auto;
-                    line-height: 1.4;
-                    font-size: toRem(14);
-
-                    ion-icon {
-                        color: inherit;
-                        margin-left: 5px;
-                        vertical-align: middle;
-                    }
-                }
-            }
-        }
-        .search-form__results::-webkit-scrollbar {
-            display: none;
-        }
-
         input {
             background-color: $search-form-background;
             color: $search-form-color;
@@ -235,7 +180,6 @@ ion-icon {
             width: 100%;
             height: 100%;
             z-index: 2;
-            text-decoration: none;
         }
 
         &::before {
@@ -259,10 +203,20 @@ ion-icon {
             left: $article-padding-left-right;
             top: $article-padding-top-bottom;
             border-radius: 30px;
-            border: 1px solid #ffffff;
+            color: #ffffff;
+            border: 1px solid;
             padding: 5px 15px;
             font-size: toRem(10);
             font-weight: $font-weight-medium;
+            z-index: 5;
+            cursor: pointer;
+            transition: background-color .15s ease-in, color .15s ease-in, border-color .15s linear;
+
+            &:hover {
+                background-color: #ffffff;
+                color: #05141b;
+                border-color: rgba(#05141b, 0.5);
+            }
         }
         .research__latest-label {
             position: absolute;
@@ -458,7 +412,6 @@ ion-icon {
         border: none;
         cursor: pointer;
         margin-right: toRem(10);
-        text-decoration: none;
         transition: color 0.15s ease-in, background-color 0.15s ease-in;
 
         &:hover {
@@ -471,79 +424,6 @@ ion-icon {
     }
     button:last-of-type {
         margin-right: 0;
-    }
-}
-
-/**
- * Bookmarks search form
-*/
-#bookmarks-search-form {
-    margin: 50px auto;
-    position: relative;
-    display: flex;
-    width: 100%;
-    justify-content: center;
-
-    label[for="bookmarks-search-form__input"] {
-        position: relative;
-        width: 80%;
-
-        .bookmarks-search-form__input-icon {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            top: 50%;
-            left: 10px;
-            transform: translateY(-50%);
-
-            ion-icon {
-                color: $search-form-color;
-                font-size: 20px;
-            }
-        }
-        .bookmarks-search-form__input-clear {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba($search-form-color, 0.08);
-            border-radius: 50%;
-            padding: 3px;
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-            transition: background-color .15s ease;
-
-            &:hover {
-                background-color: rgba($search-form-color, 0.15);
-            }
-            ion-icon {
-                color: $search-form-color;
-            }
-        }
-    }
-
-    input {
-        background-color: $search-form-background;
-        color: $search-form-color;
-        font-size: toRem(14);
-        box-shadow: none;
-        border: 1px solid transparent;
-        outline: 0;
-        border-radius: 5px;
-        padding: 5px;
-        padding-left: 40px;
-        height: 30px;
-        width: calc(100% - 45px);
-
-        &:focus::placeholder {
-            color: transparent;
-        }
-    }
-    ::placeholder {
-        font-family: $main-font-family;
-        font-size: toRem(14);
-        opacity: 1; /* Firefox */
     }
 }
 

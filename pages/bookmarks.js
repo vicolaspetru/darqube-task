@@ -19,12 +19,8 @@ function Bookmarks({ posts }) {
                 <title>Bookmarks</title>
             </Head>
             <MainLayoutProvider>
-                <div id="research-articles">
-                    <div className="inner-wrap">
-                        <LatestResearch />
-                        <BookmarksPosts />
-                    </div>
-                </div>
+                <LatestResearch />
+                <BookmarksPosts />
             </MainLayoutProvider>
         </>
     );

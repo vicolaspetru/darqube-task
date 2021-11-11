@@ -1,48 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { useMainLayout } from "../context/main-layout/context";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    setPostsForCurrentPage,
+    setTotalPosts,
+} from "../reducers/pagination/actions";
 
-function SearchForm({ placeholder }) {
+export default function SearchForm({ placeholder, searchFrom }) {
     const inputRef = useRef(null);
     const clearInputRef = useRef(null);
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [enteredValue, setEnteredValue] = useState("");
-    const { posts } = useMainLayout();
+    const dispatch = useDispatch();
+    const posts = searchFrom;
 
     useEffect(() => {
-        function preventLinkClick(event) {
-            const parentsNeeded = [
-                "search-form__result-item",
-                "search-form__results",
-            ];
-
-            return parentsNeeded.some((parent) =>
-                event.target.parentNode.classList.contains(parent)
-            );
-        }
-        function handleClickOutside(event) {
-            if (preventLinkClick(event)) {
-                return;
-            }
-            if (
-                clearInputRef.current &&
-                clearInputRef.current.contains(event.target)
-            ) {
-                setEnteredValue("");
-            }
-            if (inputRef.current && !inputRef.current.contains(event.target)) {
-                setFilteredPosts([]);
-            } else {
-                searchHandler(event);
-            }
-        }
-
-        // Bind the event listener
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [inputRef]);
+        dispatch(setPostsForCurrentPage(filteredPosts));
+        dispatch(setTotalPosts(filteredPosts));
+    }, [filteredPosts]);
 
     const searchHandler = (event) => {
         const searchValue = event.target.value;
@@ -60,11 +34,21 @@ function SearchForm({ placeholder }) {
             }
         });
         if (searchValue === "") {
-            setFilteredPosts([]);
+            setFilteredPosts(posts);
         } else {
             setFilteredPosts(postsFilter);
         }
         setEnteredValue(searchValue);
+    };
+
+    const clearInputHandler = (event) => {
+        if (
+            clearInputRef.current &&
+            clearInputRef.current.contains(event.target)
+        ) {
+            setEnteredValue("");
+            setFilteredPosts(posts);
+        }
     };
 
     return (
@@ -78,6 +62,7 @@ function SearchForm({ placeholder }) {
                         className="search-form__input-clear"
                         ref={clearInputRef}
                         title="Clear input"
+                        onClick={clearInputHandler}
                     >
                         <ion-icon name="close"></ion-icon>
                     </span>
@@ -92,34 +77,6 @@ function SearchForm({ placeholder }) {
                     value={enteredValue}
                 />
             </label>
-            {filteredPosts.length !== 0 && (
-                <div className="search-form__results">
-                    {filteredPosts.slice(0, 15).map((post, key) => {
-                        return (
-                            <a
-                                className="search-form__result-item"
-                                key={key}
-                                href={post.url}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <span
-                                    className="post-thumbnail"
-                                    style={{
-                                        backgroundImage: `url(${post.image})`,
-                                    }}
-                                ></span>
-                                <h3 className="post-title">
-                                    {post.headline}
-                                    <ion-icon name="open-outline"></ion-icon>
-                                </h3>
-                            </a>
-                        );
-                    })}
-                </div>
-            )}
         </div>
     );
 }
-
-export default SearchForm;

@@ -1,9 +1,11 @@
+import Link from "next/link";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import {
     addToBookmarks,
     removeFromBookmarks,
 } from "../reducers/bookmarks/actions";
+import { toKebabCase } from "../utils/helpers";
 
 function ArticleItem({ article }) {
     const dispatch = useDispatch();
@@ -65,7 +67,12 @@ function ArticleItem({ article }) {
             >
                 &nbsp;
             </a>
-            <span className="research__related-label">{article.source}</span>
+            <Link
+                href={"posts/source/[slug]"}
+                as={`posts/source/${toKebabCase(article.source)}`}
+            >
+                <a className="research__related-label">{article.source}</a>
+            </Link>
             {isLatestResearch && (
                 <span className="research__latest-label">Latest research</span>
             )}

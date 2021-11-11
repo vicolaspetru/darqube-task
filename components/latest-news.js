@@ -27,12 +27,17 @@ function LatestNews() {
     });
 
     return (
-        <div id="latest-news" className={classes}>
-            {currentPagePosts.map((post) => (
-                <ArticleItem key={post.id} article={post} />
-            ))}
+        <>
+            <div id="latest-news" className={classes}>
+                {currentPagePosts.map((post) => (
+                    <ArticleItem key={post.id} article={post} />
+                ))}
+                {currentPagePosts.length === 0 && (
+                    <p>No posts found to display.</p>
+                )}
+            </div>
             <Pagination posts={latestPosts} />
-        </div>
+        </>
     );
 }
 

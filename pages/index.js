@@ -19,11 +19,9 @@ function Home({ posts }) {
                 <title>Welcome to Apple latest news</title>
             </Head>
             <MainLayoutProvider>
-                <div id="research-articles">
-                    <div className="inner-wrap">
-                        <LatestResearch />
-                        <LatestNews />
-                    </div>
+                <LatestResearch />
+                <div className="content-wrapper">
+                    <LatestNews />
                 </div>
             </MainLayoutProvider>
         </>
