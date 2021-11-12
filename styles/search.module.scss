@@ -79,7 +79,7 @@
 		padding-left: 40px;
 		height: 30px;
 		width: 150px;
-		transition: width .25s linear;
+		transition: width .25s linear, opacity .15s linear;
 		z-index: 1;
 
 		&:focus::placeholder {

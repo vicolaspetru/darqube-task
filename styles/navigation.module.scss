@@ -3,7 +3,7 @@
 
 .mainNav {
 	opacity: 1;
-	transition: opacity .15s linear;
+	transition: opacity .15s linear, width .25 ease, height .25s ease;
 
 	ul {
 		margin: 0;
@@ -48,5 +48,7 @@
 	}
 	.searchFormIsOpened {
 		opacity: 0;
+		width: 0;
+		height: 0;
 	}
 }
