@@ -52,107 +52,6 @@ ion-icon {
         align-items: center;
         padding: toRem(25) 0;
     }
-    nav {
-        ul {
-            margin: 0;
-            padding: 0;
-
-            > li {
-                display: inline-block;
-                margin-right: toRem(10);
-
-                > a {
-                    display: block;
-                    font-size: $nav-menu-font-size;
-                    font-weight: $nav-menu-font-weight;
-                    font-family: $nav-menu-font-family;
-                    color: rgba($nav-menu-color, 0.5);
-                    transition: color 0.15s ease-in;
-                    padding: toRem(10);
-
-                    &:hover {
-                        color: $nav-menu-color;
-                    }
-                    &.active {
-                        color: $nav-menu-color;
-                    }
-                }
-                &:first-child > a {
-                    padding-left: 0;
-                }
-            }
-        }
-    }
-    #search-form {
-        margin-left: auto;
-        position: relative;
-
-        label[for="search-form__input"] {
-            position: relative;
-            display: block;
-
-            .search-form__input-icon {
-                position: absolute;
-                width: 20px;
-                height: 20px;
-                top: 50%;
-                left: 10px;
-                transform: translateY(-50%);
-
-                ion-icon {
-                    color: $search-form-color;
-                    font-size: 20px;
-                }
-            }
-            .search-form__input-clear {
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                background-color: rgba($search-form-color, 0.08);
-                border-radius: 50%;
-                padding: 3px;
-                width: 16px;
-                height: 16px;
-                cursor: pointer;
-                transition: background-color .15s ease;
-
-                &:hover {
-                    background-color: rgba($search-form-color, 0.15);
-                }
-                ion-icon {
-                    color: $search-form-color;
-                }
-            }
-        }
-
-        input {
-            background-color: $search-form-background;
-            color: $search-form-color;
-            font-size: toRem(14);
-            box-shadow: none;
-            border: 1px solid transparent;
-            outline: 0;
-            border-radius: 5px;
-            padding: 5px;
-            padding-left: 40px;
-            height: 30px;
-            width: 150px;
-            transition: width .25s linear;
-
-            &:focus::placeholder {
-                color: transparent;
-            }
-            &:focus {
-                width: 305px;
-            }
-        }
-        ::placeholder {
-            font-family: $main-font-family;
-            font-size: toRem(14);
-            opacity: 1; /* Firefox */
-        }
-    }
 }
 
 /**
@@ -210,7 +109,8 @@ ion-icon {
             font-weight: $font-weight-medium;
             z-index: 5;
             cursor: pointer;
-            transition: background-color .15s ease-in, color .15s ease-in, border-color .15s linear;
+            transition: background-color 0.15s ease-in, color 0.15s ease-in,
+                border-color 0.15s linear;
 
             &:hover {
                 background-color: #ffffff;
@@ -318,30 +218,30 @@ ion-icon {
 
     // Skeleton loading
     article.is-article-skeleton-loading {
-      &::before {
-        background: rgba($loading-background-color, 0.15);
-      }
-
-      .research__related-label,
-      .research__latest-label {
-        background-color: transparent;
-        border-color: transparent;
-        > span[aria-live="polite"] {
-          position: absolute;
-          left: 0;
-          top: 0;
-        }
-      }
-      .research__latest-label > span[aria-live="polite"] {
-        left: auto;
-        right: 0;
-      }
-
-      .article__read-more {
         &::before {
-          display: none;
+            background: rgba($loading-background-color, 0.15);
         }
-      }
+
+        .research__related-label,
+        .research__latest-label {
+            background-color: transparent;
+            border-color: transparent;
+            > span[aria-live="polite"] {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+        .research__latest-label > span[aria-live="polite"] {
+            left: auto;
+            right: 0;
+        }
+
+        .article__read-more {
+            &::before {
+                display: none;
+            }
+        }
     }
 }
 
@@ -376,55 +276,6 @@ ion-icon {
 }
 .content-wrapper #latest-news {
     flex: 0;
-}
-
-/**
- * Pagination
-*/
-#latest-news-pagination {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    color: rgba($text-color, 0.25);
-    font-size: toRem(12);
-    display: flex;
-    align-items: center;
-    width: 100%;
-
-    .pagination__current-page {
-        display: inline-block;
-        strong {
-            color: $text-color;
-            margin-right: toRem(5);
-        }
-    }
-    .pagination__prev-page,
-    .pagination__next-page {
-        display: inline-block;
-        color: $pagination-button-color;
-        background-color: $pagination-button-background;
-        text-transform: uppercase;
-        font-size: toRem(10);
-        font-weight: $font-weight-bold;
-        padding: 10px;
-        width: 120px;
-        border-radius: 30px;
-        text-align: center;
-        border: none;
-        cursor: pointer;
-        margin-right: toRem(10);
-        transition: color 0.15s ease-in, background-color 0.15s ease-in;
-
-        &:hover {
-            background-color: $search-form-background;
-            color: $search-form-color;
-        }
-    }
-    button:first-of-type {
-        margin-left: auto;
-    }
-    button:last-of-type {
-        margin-right: 0;
-    }
 }
 
 @import "media-queries.scss";

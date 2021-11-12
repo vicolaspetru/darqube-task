@@ -1,0 +1,140 @@
+@import './mixins.scss';
+@import './variables.scss';
+
+.searchForm {
+	margin-left: auto;
+	position: relative;
+
+	label[for="search-form__input"] {
+		position: relative;
+		display: block;
+	}
+	
+	.inputIcon {
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		top: 50%;
+		left: 10px;
+		transform: translateY(-50%);
+		z-index: 2;
+
+		ion-icon {
+			color: $search-form-color;
+			font-size: 20px;
+		}
+	}
+	button.inputIcon {
+		width: 26px;
+		height: 26px;
+		left: auto;
+		right: 0;
+		padding: 8px;
+		background-color: $search-form-background;
+		color: $search-form-color;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		transition: background-color .15s ease-in-out;
+		display: none;
+
+		&:hover {
+			background-color: rgba($search-form-color, 0.08);
+		}
+		ion-icon {
+			color: $search-form-color;
+			font-size: 20px;
+		}
+	}
+	.inputClear {
+		position: absolute;
+		right: 10px;
+		top: 50%;
+		transform: translateY(-50%);
+		background-color: rgba($search-form-color, 0.08);
+		border-radius: 50%;
+		padding: 3px;
+		width: 16px;
+		height: 16px;
+		cursor: pointer;
+		transition: background-color .15s ease;
+
+		&:hover {
+			background-color: rgba($search-form-color, 0.15);
+		}
+		ion-icon {
+			color: $search-form-color;
+		}
+	}
+
+	.inputField {
+		background-color: $search-form-background;
+		color: $search-form-color;
+		font-size: toRem(14);
+		box-shadow: none;
+		border: 1px solid transparent;
+		outline: 0;
+		border-radius: 5px;
+		padding: 5px;
+		padding-left: 40px;
+		height: 30px;
+		width: 150px;
+		transition: width .25s linear;
+		z-index: 1;
+
+		&:focus::placeholder {
+			color: transparent;
+		}
+		&:focus {
+			width: 305px;
+		}
+	}
+	::placeholder {
+		font-family: $main-font-family;
+		font-size: toRem(14);
+		opacity: 1; /* Firefox */
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.searchForm {
+		.inputField {
+			&:focus {
+				width: 150px;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.searchForm {
+		.inputField {
+			width: 0;
+			padding: 5px 20px;
+			opacity: 0;
+
+			&:focus {
+				padding-left: 40px;
+			}
+		}
+		span.inputIcon {
+			display: none;
+		}
+		button.inputIcon {
+			display: block;
+		}
+	}
+	.searchFormIsOpened {
+		.searchForm {
+			.inputField {
+				opacity: 1;
+			}
+			span.inputIcon {
+				display: block;
+			}
+			button.inputIcon {
+				display: none;
+			}
+		}
+	}
+}

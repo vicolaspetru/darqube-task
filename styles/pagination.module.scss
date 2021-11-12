@@ -1,0 +1,58 @@
+@import './mixins.scss';
+@import './variables.scss';
+
+.pagination {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    color: rgba($text-color, 0.25);
+    font-size: toRem(12);
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .currentPage {
+        display: inline-block;
+        strong {
+            color: $text-color;
+            margin-right: toRem(5);
+        }
+    }
+    .prevButton,
+    .nextButton {
+        display: inline-block;
+        color: $pagination-button-color;
+        background-color: $pagination-button-background;
+        text-transform: uppercase;
+        font-size: toRem(10);
+        font-weight: $font-weight-bold;
+        padding: 10px;
+        width: 120px;
+        border-radius: 30px;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+        margin-right: toRem(10);
+        transition: color 0.15s ease-in, background-color 0.15s ease-in;
+
+        &:hover {
+            background-color: $search-form-background;
+            color: $search-form-color;
+        }
+    }
+    button:first-of-type {
+        margin-left: auto;
+    }
+    button:last-of-type {
+        margin-right: 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+	.pagination {
+		.prevButton, .nextButton {
+			width: auto;
+			padding-left: 30px;
+			padding-right: 30px;
+		}
+	}
+}

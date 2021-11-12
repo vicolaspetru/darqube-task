@@ -1,10 +1,12 @@
 import { useRouter } from "next/router";
 import classnames from "classnames";
+import classNames from "../styles/navigation.module.scss";
+import { useSelector } from "react-redux";
 
 export function ActiveLink({ children, href }) {
     const router = useRouter();
     const classes = classnames({
-        active: router.asPath === href,
+        [classNames.active]: router.asPath === href,
     });
 
     const handleClick = (e) => {
@@ -20,8 +22,12 @@ export function ActiveLink({ children, href }) {
 }
 
 export function Navigation() {
+    const searchInputIsFocus = useSelector((state) => state.searchForm.focus);
+    const mainNavClasses = classnames(classNames.mainNav, {
+        [classNames.searchFormIsOpened]: searchInputIsFocus,
+    });
     return (
-        <nav>
+        <nav className={mainNavClasses}>
             <ul>
                 <li>
                     <ActiveLink href={"/"}>News</ActiveLink>

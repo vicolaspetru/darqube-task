@@ -5,15 +5,16 @@ import {
     setPostsForCurrentPage,
     setTotalPosts,
 } from "../reducers/pagination/actions";
+import classNames from "../styles/pagination.module.scss";
 
 const PreviousButton = ({ onClick }) => (
-    <button className="pagination__prev-page" onClick={onClick}>
+    <button className={classNames.prevButton} onClick={onClick}>
         Previous
     </button>
 );
 
 const NextButton = ({ onClick }) => (
-    <button className="pagination__next-page" onClick={onClick}>
+    <button className={classNames.nextButton} onClick={onClick}>
         Next
     </button>
 );
@@ -42,9 +43,9 @@ function Pagination({ posts }) {
     };
 
     return (
-        <div id="latest-news-pagination">
+        <div id="latest-news-pagination" className={classNames.pagination}>
             {totalPages > 0 && (
-                <span className="pagination__current-page">
+                <span className={classNames.currentPage}>
                     <strong>{`${postsCount.first}-${postsCount.last}`}</strong>{" "}
                     out of {totalPosts}
                 </span>

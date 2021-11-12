@@ -2,6 +2,8 @@ import { Navigation } from "./navigation";
 import SearchForm from "./search-form";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import classnames from "classnames";
+import classNames from "../styles/search.module.scss";
 
 function Header() {
     const router = useRouter();
@@ -9,9 +11,14 @@ function Header() {
     const latestPosts = useSelector((state) => state.posts.latestPosts);
     const bookmarksPosts = useSelector((state) => state.bookmarks.posts);
     const sourcePosts = useSelector((state) => state.postsSource.posts);
+    const searchInputIsFocus = useSelector((state) => state.searchForm.focus);
+
+    const headerClasses = classnames({
+        [classNames.searchFormIsOpened]: searchInputIsFocus,
+    });
 
     return (
-        <header id="header">
+        <header id="header" className={headerClasses}>
             <div className="inner-wrap">
                 <Navigation />
                 {asPath === "/bookmarks" && (

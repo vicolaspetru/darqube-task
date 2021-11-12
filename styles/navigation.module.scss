@@ -1,0 +1,52 @@
+@import './mixins.scss';
+@import './variables.scss';
+
+.mainNav {
+	opacity: 1;
+	transition: opacity .15s linear;
+
+	ul {
+		margin: 0;
+		padding: 0;
+
+		> li {
+			display: inline-block;
+			margin-right: toRem(10);
+
+			> a {
+				display: block;
+				font-size: $nav-menu-font-size;
+				font-weight: $nav-menu-font-weight;
+				font-family: $nav-menu-font-family;
+				color: rgba($nav-menu-color, 0.5);
+				transition: color 0.15s ease-in;
+				padding: toRem(10);
+
+				&:hover {
+					color: $nav-menu-color;
+				}
+				&.active {
+					color: $nav-menu-color;
+				}
+			}
+			&:first-child > a {
+				padding-left: 0;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 600px) {
+    .mainNav ul > li > a {
+		font-size: toRem(18);
+	}
+}
+
+@media screen and (max-width: 480px) {
+    .mainNav ul > li > a {
+		font-size: toRem(16);
+	}
+	.searchFormIsOpened {
+		opacity: 0;
+	}
+}

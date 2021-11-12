@@ -71,15 +71,5 @@
         .inner-wrap {
             padding-top: 0;
         }
-        nav ul > li > a {
-            font-size: toRem(18);
-        }
-        #search-form {
-            input {
-                &:focus {
-                    width: 150px;
-                }
-            }
-        }
     }
 }

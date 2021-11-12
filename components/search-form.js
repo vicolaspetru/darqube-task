@@ -4,19 +4,43 @@ import {
     setPostsForCurrentPage,
     setTotalPosts,
 } from "../reducers/pagination/actions";
+import { setInputFocus } from "../reducers/searchForm/actions";
+import classNames from "../styles/search.module.scss";
 
 export default function SearchForm({ placeholder, searchFrom }) {
+    const dispatch = useDispatch();
     const inputRef = useRef(null);
     const clearInputRef = useRef(null);
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [enteredValue, setEnteredValue] = useState("");
-    const dispatch = useDispatch();
     const posts = searchFrom;
+    const searchInputIsFocus = useSelector((state) => state.searchForm.focus);
 
     useEffect(() => {
         dispatch(setPostsForCurrentPage(filteredPosts));
         dispatch(setTotalPosts(filteredPosts));
     }, [filteredPosts]);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                clearInputRef.current &&
+                clearInputRef.current.contains(event.target)
+            ) {
+                setEnteredValue("");
+            }
+            if (inputRef.current && !inputRef.current.contains(event.target)) {
+                dispatch(setInputFocus(false));
+            }
+        }
+
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [inputRef]);
 
     const searchHandler = (event) => {
         const searchValue = event.target.value;
@@ -48,18 +72,41 @@ export default function SearchForm({ placeholder, searchFrom }) {
         ) {
             setEnteredValue("");
             setFilteredPosts(posts);
+            dispatch(setInputFocus(false));
+        }
+    };
+
+    const focusInput = () => {
+        if (inputRef.current) {
+            dispatch(setInputFocus(true));
+            inputRef.current.focus();
+        }
+    };
+
+    const unfocusInput = () => {
+        if (inputRef.current) {
+            dispatch(setInputFocus(false));
         }
     };
 
     return (
-        <div id="search-form">
+        <div id="search-form" className={classNames.searchForm}>
             <label htmlFor="search-form__input">
-                <span className="search-form__input-icon">
+                <span
+                    className={classNames.inputIcon}
+                    onClick={() => unfocusInput()}
+                >
                     <ion-icon name="search"></ion-icon>
                 </span>
-                {enteredValue !== "" && (
+                <button
+                    className={classNames.inputIcon}
+                    onClick={() => focusInput()}
+                >
+                    <ion-icon name="search"></ion-icon>
+                </button>
+                {enteredValue !== "" && searchInputIsFocus && (
                     <span
-                        className="search-form__input-clear"
+                        className={classNames.inputClear}
                         ref={clearInputRef}
                         title="Clear input"
                         onClick={clearInputHandler}
@@ -71,8 +118,9 @@ export default function SearchForm({ placeholder, searchFrom }) {
                     type="text"
                     placeholder={placeholder}
                     id="search-form__input"
-                    className="search-form__input"
+                    className={classNames.inputField}
                     onChange={searchHandler}
+                    onClick={() => focusInput()}
                     ref={inputRef}
                     value={enteredValue}
                 />
