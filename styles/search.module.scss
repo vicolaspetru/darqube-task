@@ -125,16 +125,14 @@
 		}
 	}
 	.searchFormIsOpened {
-		.searchForm {
-			.inputField {
-				opacity: 1;
-			}
-			span.inputIcon {
-				display: block;
-			}
-			button.inputIcon {
-				display: none;
-			}
+		.inputField {
+			opacity: 1;
+		}
+		span.inputIcon {
+			display: block;
+		}
+		button.inputIcon {
+			display: none;
 		}
 	}
 }

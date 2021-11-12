@@ -4,7 +4,7 @@ import {
     setPostsForCurrentPage,
     setTotalPosts,
 } from "../reducers/pagination/actions";
-import { setInputFocus } from "../reducers/searchForm/actions";
+import classnames from "classnames";
 import classNames from "../styles/search.module.scss";
 
 export default function SearchForm({ placeholder, searchFrom }) {
@@ -13,8 +13,8 @@ export default function SearchForm({ placeholder, searchFrom }) {
     const clearInputRef = useRef(null);
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [enteredValue, setEnteredValue] = useState("");
+    const [inputFocus, setInputFocus] = useState(false);
     const posts = searchFrom;
-    const searchInputIsFocus = useSelector((state) => state.searchForm.focus);
 
     useEffect(() => {
         dispatch(setPostsForCurrentPage(filteredPosts));
@@ -29,8 +29,12 @@ export default function SearchForm({ placeholder, searchFrom }) {
             ) {
                 setEnteredValue("");
             }
-            if (inputRef.current && !inputRef.current.contains(event.target)) {
-                dispatch(setInputFocus(false));
+            if (
+                inputRef.current &&
+                !inputRef.current.contains(event.target) &&
+                enteredValue === ""
+            ) {
+                setInputFocus(false);
             }
         }
 
@@ -72,25 +76,29 @@ export default function SearchForm({ placeholder, searchFrom }) {
         ) {
             setEnteredValue("");
             setFilteredPosts(posts);
-            dispatch(setInputFocus(false));
+            setInputFocus(false);
         }
     };
 
     const focusInput = () => {
         if (inputRef.current) {
-            dispatch(setInputFocus(true));
+            setInputFocus(true);
             inputRef.current.focus();
         }
     };
 
     const unfocusInput = () => {
         if (inputRef.current) {
-            dispatch(setInputFocus(false));
+            setInputFocus(false);
         }
     };
 
+    const searchFormClasses = classnames(classNames.searchForm, {
+        [classNames.searchFormIsOpened]: inputFocus,
+    });
+
     return (
-        <div id="search-form" className={classNames.searchForm}>
+        <div id="search-form" className={searchFormClasses}>
             <label htmlFor="search-form__input">
                 <span
                     className={classNames.inputIcon}

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import classnames from "classnames";
 import classNames from "../styles/navigation.module.scss";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 
 export function ActiveLink({ children, href }) {
     const router = useRouter();
@@ -22,12 +22,10 @@ export function ActiveLink({ children, href }) {
 }
 
 export function Navigation() {
-    const searchInputIsFocus = useSelector((state) => state.searchForm.focus);
-    const mainNavClasses = classnames(classNames.mainNav, {
-        [classNames.searchFormIsOpened]: searchInputIsFocus,
-    });
-    return (
-        <nav className={mainNavClasses}>
+    const [hamburgerOpen, setHamburgerOpen] = useState(false);
+
+    const navmenu = (
+        <nav className={classNames.navMenu}>
             <ul>
                 <li>
                     <ActiveLink href={"/"}>News</ActiveLink>
@@ -37,5 +35,27 @@ export function Navigation() {
                 </li>
             </ul>
         </nav>
+    );
+
+    const hamburgerButtonClasses = classnames(classNames.hamburgerButton, {
+        [classNames.openNavMenu]: hamburgerOpen,
+    });
+
+    return (
+        <>
+            <div className={classNames.mobileNav}>
+                <button
+                    className={hamburgerButtonClasses}
+                    onClick={() => setHamburgerOpen(!hamburgerOpen)}
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                {hamburgerOpen && navmenu}
+            </div>
+            <div className={classNames.mainNav}>{navmenu}</div>
+        </>
     );
 }
