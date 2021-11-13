@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import classnames from "classnames";
 import classNames from "../styles/navigation.module.scss";
 import { useState } from "react";
+import Link from "next/link";
 
 export function ActiveLink({ children, href }) {
     const router = useRouter();
@@ -9,15 +10,10 @@ export function ActiveLink({ children, href }) {
         [classNames.active]: router.asPath === href,
     });
 
-    const handleClick = (e) => {
-        e.preventDefault();
-        router.push(href);
-    };
-
     return (
-        <a href={href} onClick={handleClick} className={classes}>
-            {children}
-        </a>
+        <Link href={href}>
+            <a className={classes}>{children}</a>
+        </Link>
     );
 }
 

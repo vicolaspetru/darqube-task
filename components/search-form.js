@@ -112,7 +112,7 @@ export default function SearchForm({ placeholder, searchFrom }) {
                 >
                     <ion-icon name="search"></ion-icon>
                 </button>
-                {enteredValue !== "" && searchInputIsFocus && (
+                {enteredValue !== "" && (
                     <span
                         className={classNames.inputClear}
                         ref={clearInputRef}
