@@ -27,12 +27,15 @@ function Pagination({ posts }) {
     const totalPages = Math.ceil(totalPosts / postsPerPage);
     const postsCount = {
         first: postsPerPage * currentPage - postsPerPage + 1,
-        last: postsPerPage * currentPage,
+        last:
+            postsPerPage * currentPage < totalPosts
+                ? postsPerPage * currentPage
+                : totalPosts,
     };
 
     useEffect(() => {
         dispatch(setPostsForCurrentPage(posts, currentPage, postsPerPage));
-    }, [currentPage, posts]);
+    }, [currentPage, posts, postsPerPage]);
 
     useEffect(() => {
         dispatch(setTotalPosts(posts));

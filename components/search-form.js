@@ -22,12 +22,12 @@ export default function SearchForm({ placeholder, searchFrom }) {
     }, [filteredPosts]);
 
     useEffect(() => {
-        function handleClickOutside(event) {
+        function handleEventsSearchForm(event) {
             if (
                 clearInputRef.current &&
                 clearInputRef.current.contains(event.target)
             ) {
-                setEnteredValue("");
+                event.preventDefault();
             }
             if (
                 inputRef.current &&
@@ -39,12 +39,12 @@ export default function SearchForm({ placeholder, searchFrom }) {
         }
 
         // Bind the event listener
-        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("mousedown", handleEventsSearchForm);
         return () => {
             // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("mousedown", handleEventsSearchForm);
         };
-    }, [inputRef]);
+    }, [enteredValue]);
 
     const searchHandler = (event) => {
         const searchValue = event.target.value;
