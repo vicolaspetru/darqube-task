@@ -1,10 +1,9 @@
 @import './mixins.scss';
 @import './variables.scss';
 
-.inner-wrap {
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
+.page-404 {
+	margin: auto;
+	text-align: center;
 }
 .page-title {
 	font-size: toRem(120);
