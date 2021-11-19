@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
  */
 import ArticleItem from "./article-item";
 import Pagination from "./pagination";
+import NoResultFound from "./no-result-found";
 import { getPaginatedPosts } from "../utils/posts";
 import { defaultState } from "../reducers/pagination/constants";
 import { setPostsPerPage } from "../reducers/pagination/actions";
@@ -76,16 +77,14 @@ function LatestNews({ posts, postsPerPage = defaultState.postsPerPage }) {
     return (
         <>
             <div id="latest-news" className={classes}>
-                {paginatedPosts.length === 0
+                {paginatedPosts.length === 0 && search === ""
                     ? initialPostsDisplay.map((post) => (
                           <ArticleItem key={post.id} article={post} />
                       ))
                     : paginatedPosts.map((post) => (
                           <ArticleItem key={post.id} article={post} />
                       ))}
-                {paginatedPosts.length === 0 && (
-                    <p>No posts found to display.</p>
-                )}
+                {paginatedPosts.length === 0 && <NoResultFound />}
             </div>
             <Pagination posts={latestPosts} />
         </>

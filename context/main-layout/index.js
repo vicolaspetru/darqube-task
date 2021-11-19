@@ -26,7 +26,7 @@ export const MainLayoutProvider = ({ children }) => {
     }, []); // eslint-disable-line
 
     return (
-        <MainLayoutContext.Provider>
+        <MainLayoutContext.Provider value="">
             <div className="container">
                 <Header />
                 <div id="research-articles">
