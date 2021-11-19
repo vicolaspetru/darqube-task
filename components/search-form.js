@@ -1,25 +1,55 @@
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-    setPostsForCurrentPage,
-    setTotalPosts,
-} from "../reducers/pagination/actions";
+/**
+ * External dependencies
+ */
 import classnames from "classnames";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
+
+/**
+ * Internal dependencies
+ */
 import classNames from "../styles/search.module.scss";
 
-export default function SearchForm({ placeholder, searchFrom }) {
-    const dispatch = useDispatch();
+export default function SearchForm({ placeholder }) {
+    const router = useRouter();
+    const { pathname, query } = router;
     const inputRef = useRef(null);
     const clearInputRef = useRef(null);
-    const [filteredPosts, setFilteredPosts] = useState([]);
     const [enteredValue, setEnteredValue] = useState("");
     const [inputFocus, setInputFocus] = useState(false);
-    const posts = searchFrom;
+    const [currentPage, setCurrentPge] = useState(1);
 
     useEffect(() => {
-        dispatch(setPostsForCurrentPage(filteredPosts));
-        dispatch(setTotalPosts(filteredPosts));
-    }, [filteredPosts]);
+        const { page, search } = query;
+        if (page > 1 && !search) {
+            setCurrentPge(parseInt(page));
+        }
+    }, [query]);
+
+    useEffect(() => {
+        if (enteredValue !== "") {
+            router.push(
+                {
+                    pathname,
+                    query: {
+                        ...query,
+                        page: 1,
+                        s: encodeURIComponent(enteredValue),
+                    },
+                },
+                undefined,
+                { shallow: true }
+            );
+        } else {
+            delete query["s"];
+
+            if (currentPage > 1) {
+                query.page = currentPage;
+            }
+
+            router.replace({ pathname, query }, undefined, { shallow: true });
+        }
+    }, [enteredValue]);
 
     useEffect(() => {
         function handleEventsSearchForm(event) {
@@ -48,24 +78,6 @@ export default function SearchForm({ placeholder, searchFrom }) {
 
     const searchHandler = (event) => {
         const searchValue = event.target.value;
-        const searchValuesArray = searchValue.split(" ");
-        const postsFilter = posts.filter((post) => {
-            if (
-                searchValuesArray.every((keyword) =>
-                    post.headline.toLowerCase().includes(keyword.toLowerCase())
-                ) ||
-                searchValuesArray.every((keyword) =>
-                    post.summary.toLowerCase().includes(keyword.toLowerCase())
-                )
-            ) {
-                return post;
-            }
-        });
-        if (searchValue === "") {
-            setFilteredPosts(posts);
-        } else {
-            setFilteredPosts(postsFilter);
-        }
         setEnteredValue(searchValue);
     };
 
@@ -75,7 +87,6 @@ export default function SearchForm({ placeholder, searchFrom }) {
             clearInputRef.current.contains(event.target)
         ) {
             setEnteredValue("");
-            setFilteredPosts(posts);
             setInputFocus(false);
         }
     };

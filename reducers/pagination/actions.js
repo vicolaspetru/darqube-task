@@ -1,16 +1,4 @@
-import {
-    defaultState,
-    SET_CURRENT_PAGE,
-    SET_CURRENT_PAGE_POSTS,
-    SET_TOTAL_POSTS,
-} from "./constants";
-
-export function setCurrentPage(page) {
-    return {
-        type: SET_CURRENT_PAGE,
-        payload: page,
-    };
-}
+import { SET_TOTAL_POSTS, SET_POSTS_PER_PAGE } from "./constants";
 
 export function setTotalPosts(posts) {
     return {
@@ -19,16 +7,9 @@ export function setTotalPosts(posts) {
     };
 }
 
-export function setPostsForCurrentPage(
-    posts,
-    currentPage = 1,
-    postsPerPage = defaultState.postsPerPage
-) {
-    const lastPageIndex = currentPage * postsPerPage;
-    const firstPageIndex = lastPageIndex - postsPerPage;
-
+export function setPostsPerPage(perPage) {
     return {
-        type: SET_CURRENT_PAGE_POSTS,
-        payload: posts.slice(firstPageIndex, lastPageIndex),
+        type: SET_POSTS_PER_PAGE,
+        payload: parseInt(perPage),
     };
 }

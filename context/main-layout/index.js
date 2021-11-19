@@ -1,14 +1,19 @@
-import { MainLayoutContext } from "./context";
-import Header from "../../components/header";
+/**
+ * External dependencies
+ */
 import Script from "next/script";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
+/**
+ * Internal dependencies
+ */
+import { MainLayoutContext } from "./context";
+import Header from "../../components/header";
 import SkeletonLoading from "../../components/skeleton-loading";
 
 export const MainLayoutProvider = ({ children }) => {
     const router = useRouter();
-    const posts = useSelector((state) => state.posts.posts);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -21,7 +26,7 @@ export const MainLayoutProvider = ({ children }) => {
     }, []); // eslint-disable-line
 
     return (
-        <MainLayoutContext.Provider value={{ posts }}>
+        <MainLayoutContext.Provider>
             <div className="container">
                 <Header />
                 <div id="research-articles">

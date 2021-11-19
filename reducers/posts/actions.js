@@ -1,22 +1,16 @@
-import { SET_LATEST_POSTS, SET_LATEST_RESEARCH, SET_POSTS } from "./constants";
-
-export function setPosts(posts) {
-    return {
-        type: SET_POSTS,
-        payload: posts,
-    };
-}
+import { getLatestPosts, getLatestResearch } from "../../utils/posts";
+import { SET_LATEST_POSTS, SET_LATEST_RESEARCH } from "./constants";
 
 export function setLatestResearch(posts) {
     return {
         type: SET_LATEST_RESEARCH,
-        payload: posts.filter((_, index) => index === 0),
+        payload: getLatestResearch(posts),
     };
 }
 
 export function setLatestPosts(posts) {
     return {
         type: SET_LATEST_POSTS,
-        payload: posts.filter((_, index) => index !== 0),
+        payload: getLatestPosts(posts),
     };
 }
