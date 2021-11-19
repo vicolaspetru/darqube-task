@@ -1,17 +1,19 @@
+/**
+ * External dependencies
+ */
 import Head from "next/head";
-import { MainLayoutProvider } from "../context/main-layout";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { setPosts } from "../reducers/posts/actions";
+
+/**
+ * Internal dependencies
+ */
 import LatestResearch from "../components/latest-research";
 import LatestNews from "../components/latest-news";
+import { MainLayoutProvider } from "../context/main-layout";
+import { getLatestPosts, getLatestResearch } from "../utils/posts";
 
 function Home({ posts }) {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(setPosts(posts));
-    }, [posts]);
+    const latestResearch = getLatestResearch(posts);
+    const latestPosts = getLatestPosts(posts);
 
     return (
         <>
@@ -19,9 +21,9 @@ function Home({ posts }) {
                 <title>Welcome to Apple latest news</title>
             </Head>
             <MainLayoutProvider>
-                <LatestResearch />
+                <LatestResearch posts={latestResearch} />
                 <div className="content-wrapper">
-                    <LatestNews />
+                    <LatestNews posts={latestPosts} />
                 </div>
             </MainLayoutProvider>
         </>
@@ -31,12 +33,6 @@ function Home({ posts }) {
 export async function getServerSideProps() {
     const res = await fetch(process.env.API_ENDPOINT);
     const posts = await res.json();
-
-    if (!posts) {
-        return {
-            notFound: true,
-        };
-    }
 
     // Pass data to the page via props
     return { props: { posts } };

@@ -1,17 +1,20 @@
+/**
+ * External dependencies
+ */
 import Head from "next/head";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+
+/**
+ * Internal dependencies
+ */
 import BookmarksPosts from "../components/bookmarks-posts";
 import LatestResearch from "../components/latest-research";
 import { MainLayoutProvider } from "../context/main-layout";
-import { setPosts } from "../reducers/posts/actions";
+import { getLatestResearch } from "../utils/posts";
 
 function Bookmarks({ posts }) {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(setPosts(posts));
-    }, [posts]);
+    const latestResearch = getLatestResearch(posts);
+    const { posts: bookmarksPosts } = useSelector((state) => state.bookmarks);
 
     return (
         <>
@@ -19,8 +22,8 @@ function Bookmarks({ posts }) {
                 <title>Bookmarks</title>
             </Head>
             <MainLayoutProvider>
-                <LatestResearch />
-                <BookmarksPosts />
+                <LatestResearch posts={latestResearch} />
+                <BookmarksPosts posts={bookmarksPosts} />
             </MainLayoutProvider>
         </>
     );
@@ -29,12 +32,6 @@ function Bookmarks({ posts }) {
 export async function getServerSideProps() {
     const res = await fetch(process.env.API_ENDPOINT);
     const posts = await res.json();
-
-    if (!posts) {
-        return {
-            notFound: true,
-        };
-    }
 
     // Pass data to the page via props
     return { props: { posts } };

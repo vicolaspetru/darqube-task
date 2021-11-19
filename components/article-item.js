@@ -1,6 +1,13 @@
+/**
+ * External dependencies
+ */
 import Link from "next/link";
-import classNames from "classnames";
+import classnames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
+
+/**
+ * Internal dependencies
+ */
 import {
     addToBookmarks,
     removeFromBookmarks,
@@ -53,7 +60,7 @@ function ArticleItem({ article }) {
         }
     };
 
-    const bookmarkClasses = classNames("article__add-to-bookmark", {
+    const bookmarkClasses = classnames("article__add-to-bookmark", {
         "is-added-to-bookmarks": isAddedToBookmarks,
     });
 
@@ -68,8 +75,8 @@ function ArticleItem({ article }) {
                 &nbsp;
             </a>
             <Link
-                href={"posts/source/[slug]"}
-                as={`posts/source/${toKebabCase(article.source)}`}
+                href={"/posts/source/[slug]"}
+                as={`/posts/source/${toKebabCase(article.source)}`}
             >
                 <a className="research__related-label">{article.source}</a>
             </Link>

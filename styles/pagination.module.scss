@@ -38,11 +38,16 @@
             background-color: $search-form-background;
             color: $search-form-color;
         }
+        &[disabled] {
+            pointer-events: none;
+            background-color: rgba(#ffffff, 0.08);
+            color: rgba(#ffffff, 0.25);
+        }
     }
-    button:first-of-type {
+    a:first-of-type {
         margin-left: auto;
     }
-    button:last-of-type {
+    a:last-of-type {
         margin-right: 0;
     }
 }

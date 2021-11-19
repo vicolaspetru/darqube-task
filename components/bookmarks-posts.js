@@ -1,41 +1,49 @@
+/**
+ * External dependencies
+ */
 import classnames from "classnames";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentPage } from "../reducers/pagination/actions";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
+/**
+ * Internal dependencies
+ */
 import ArticleItem from "./article-item";
 import Pagination from "./pagination";
+import { getPaginatedPosts } from "../utils/posts";
 
-export default function BookmarksPosts() {
-    const dispatch = useDispatch();
-    const bookmarksPosts = useSelector((state) => state.bookmarks.posts);
-    const latestResearch = useSelector((state) => state.posts.latestResearch);
-    const currentPagePosts = useSelector(
-        (state) => state.pagination.currentPagePosts
-    );
+export default function BookmarksPosts({ posts }) {
+    const { query } = useRouter();
+    const { page } = query;
+    const [paginatedPosts, setPaginatedPosts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(setCurrentPage(1));
-    }, []);
+        if (page) {
+            setCurrentPage(parseInt(page));
+        }
+    }, [page]);
+
+    useEffect(() => {
+        setPaginatedPosts(getPaginatedPosts(posts, currentPage));
+    }, [posts, currentPage]);
 
     const classes = classnames({
-        "has-no-posts-items": currentPagePosts.length === 0,
+        "has-no-posts-items": paginatedPosts.length === 0,
     });
 
     return (
         <>
             <div className="content-wrapper">
                 <div id="latest-news" className={classes}>
-                    {currentPagePosts.map(
-                        (post) =>
-                            latestResearch[0].id !== post.id && (
-                                <ArticleItem key={post.id} article={post} />
-                            )
-                    )}
-                    {currentPagePosts.length === 0 && (
+                    {paginatedPosts.map((post) => (
+                        <ArticleItem key={post.id} article={post} />
+                    ))}
+                    {paginatedPosts.length === 0 && (
                         <p>No posts found to display</p>
                     )}
                 </div>
-                <Pagination posts={bookmarksPosts} />
+                <Pagination posts={posts} />
             </div>
         </>
     );

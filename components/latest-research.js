@@ -1,20 +1,12 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setLatestResearch } from "../reducers/posts/actions";
+/**
+ * Internal dependencies
+ */
 import ArticleItem from "./article-item";
 
-function LatestResearch() {
-    const dispatch = useDispatch();
-    const posts = useSelector((state) => state.posts.posts);
-    const latestResearch = useSelector((state) => state.posts.latestResearch);
-
-    useEffect(() => {
-        dispatch(setLatestResearch(posts));
-    }, [posts]);
-
+function LatestResearch({ posts }) {
     return (
         <aside id="latest-research">
-            {latestResearch.map((post) => (
+            {posts.map((post) => (
                 <ArticleItem key={post.id} article={post} />
             ))}
         </aside>
