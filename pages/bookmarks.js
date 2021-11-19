@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 /**
  * Internal dependencies
  */
-import BookmarksPosts from "../components/bookmarks-posts";
+import LatestNews from "../components/latest-news";
 import LatestResearch from "../components/latest-research";
 import { MainLayoutProvider } from "../context/main-layout";
 import { getLatestResearch } from "../utils/posts";
@@ -23,7 +23,9 @@ function Bookmarks({ posts }) {
             </Head>
             <MainLayoutProvider>
                 <LatestResearch posts={latestResearch} />
-                <BookmarksPosts posts={bookmarksPosts} />
+                <div className="content-wrapper">
+                    <LatestNews posts={bookmarksPosts} />
+                </div>
             </MainLayoutProvider>
         </>
     );
