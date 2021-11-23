@@ -75,7 +75,7 @@ export default function SearchForm({ placeholder }) {
         dispatch(setSearch(event.target.value));
     };
 
-    const clearInputHandler = useCallback((event) => {
+    const clearInputHandler = (event) => {
         event.preventDefault();
         if (
             clearInputRef.current &&
@@ -84,7 +84,7 @@ export default function SearchForm({ placeholder }) {
             dispatch(clearSearch());
             setInputFocus(false);
         }
-    }, []);
+    };
 
     const focusInput = useCallback(() => {
         if (inputRef.current && !inputFocus) {
@@ -112,26 +112,27 @@ export default function SearchForm({ placeholder }) {
                 <button className={classNames.inputIcon} onClick={focusInput}>
                     <ion-icon name="search"></ion-icon>
                 </button>
-                {searchValue !== "" && (
-                    <span
-                        className={classNames.inputClear}
-                        ref={clearInputRef}
-                        title="Clear input"
-                        onClick={clearInputHandler}
-                    >
-                        <ion-icon name="close"></ion-icon>
-                    </span>
-                )}
-                <input
-                    type="text"
-                    placeholder={placeholder}
-                    id="search-form__input"
-                    className={classNames.inputField}
-                    onChange={searchHandler}
-                    onClick={focusInput}
-                    ref={inputRef}
-                    value={searchValue}
-                />
+                <div ref={inputRef}>
+                    {searchValue !== "" && (
+                        <span
+                            className={classNames.inputClear}
+                            ref={clearInputRef}
+                            title="Clear input"
+                            onClick={clearInputHandler}
+                        >
+                            <ion-icon name="close"></ion-icon>
+                        </span>
+                    )}
+                    <input
+                        type="text"
+                        placeholder={placeholder}
+                        id="search-form__input"
+                        className={classNames.inputField}
+                        onChange={searchHandler}
+                        onClick={focusInput}
+                        value={searchValue}
+                    />
+                </div>
             </label>
         </div>
     );
