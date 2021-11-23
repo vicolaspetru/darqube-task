@@ -1,16 +1,24 @@
+/**
+ * External dependencies
+ */
 import Link from "next/link";
-import classNames from "classnames";
+import classnames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
+
+/**
+ * Internal dependencies
+ */
 import {
     addToBookmarks,
     removeFromBookmarks,
 } from "../reducers/bookmarks/actions";
 import { toKebabCase } from "../utils/helpers";
+import { useMainLayout } from "../context/main-layout/context";
 
 function ArticleItem({ article }) {
     const dispatch = useDispatch();
     const bookmarksPosts = useSelector((state) => state.bookmarks.posts);
-    const latestResearch = useSelector((state) => state.posts.latestResearch);
+    const { latestResearch } = useMainLayout();
 
     const filteredLatestResearch = latestResearch.filter((post) => {
         return post.id === article.id;
@@ -53,7 +61,7 @@ function ArticleItem({ article }) {
         }
     };
 
-    const bookmarkClasses = classNames("article__add-to-bookmark", {
+    const bookmarkClasses = classnames("article__add-to-bookmark", {
         "is-added-to-bookmarks": isAddedToBookmarks,
     });
 
@@ -68,8 +76,8 @@ function ArticleItem({ article }) {
                 &nbsp;
             </a>
             <Link
-                href={"posts/source/[slug]"}
-                as={`posts/source/${toKebabCase(article.source)}`}
+                href={"/posts/source/[slug]"}
+                as={`/posts/source/${toKebabCase(article.source)}`}
             >
                 <a className="research__related-label">{article.source}</a>
             </Link>

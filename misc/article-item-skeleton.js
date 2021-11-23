@@ -1,3 +1,6 @@
+/**
+ * External dependencies
+ */
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 function ArticleItemSkeleton({ isLatestResearch }) {

@@ -1,34 +1,29 @@
+/**
+ * External dependencies
+ */
+import { useRouter } from "next/router";
+
+/**
+ * Internal dependencies
+ */
 import { Navigation } from "./navigation";
 import SearchForm from "./search-form";
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 
 function Header() {
-    const router = useRouter();
-    const { asPath, route } = router;
-    const latestPosts = useSelector((state) => state.posts.latestPosts);
-    const bookmarksPosts = useSelector((state) => state.bookmarks.posts);
-    const sourcePosts = useSelector((state) => state.postsSource.posts);
-
+    const { pathname } = useRouter();
     return (
         <header id="header">
             <div className="inner-wrap">
                 <Navigation />
-                {asPath === "/bookmarks" && (
-                    <SearchForm
-                        placeholder="Search bookmarks"
-                        searchFrom={bookmarksPosts}
-                    />
+                {pathname === "/bookmarks" && (
+                    <SearchForm placeholder="Search bookmarks" />
                 )}
-                {route === "/posts/source/[slug]" && (
-                    <SearchForm placeholder="Search" searchFrom={sourcePosts} />
+                {pathname === "/posts/source/[slug]" && (
+                    <SearchForm placeholder="Search" />
                 )}
-                {asPath !== "/bookmarks" &&
-                    route !== "/posts/source/[slug]" && (
-                        <SearchForm
-                            placeholder="Search"
-                            searchFrom={latestPosts}
-                        />
+                {pathname !== "/bookmarks" &&
+                    pathname !== "/posts/source/[slug]" && (
+                        <SearchForm placeholder="Search" />
                     )}
             </div>
         </header>

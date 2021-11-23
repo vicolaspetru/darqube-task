@@ -1,29 +1,61 @@
+/**
+ * External dependencies
+ */
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentPage } from "../reducers/pagination/actions";
-import {
-    setPostsForCurrentPage,
-    setTotalPosts,
-} from "../reducers/pagination/actions";
+
+/**
+ * Internal dependencies
+ */
+import { setCurrentPage, setTotalPosts } from "../reducers/pagination/actions";
 import classNames from "../styles/pagination.module.scss";
 
-const PreviousButton = ({ onClick }) => (
-    <button className={classNames.prevButton} onClick={onClick}>
-        Previous
-    </button>
-);
+const PreviousButton = ({ currentPage, disabled }) => {
+    const { pathname, query } = useRouter();
+    return (
+        <Link
+            href={{ pathname, query: { ...query, page: currentPage - 1 } }}
+            shallow
+        >
+            <a className={classNames.prevButton} disabled={disabled}>
+                Previous
+            </a>
+        </Link>
+    );
+};
 
-const NextButton = ({ onClick }) => (
-    <button className={classNames.nextButton} onClick={onClick}>
-        Next
-    </button>
-);
+const NextButton = ({ currentPage, disabled }) => {
+    const { pathname, query } = useRouter();
+    return (
+        <Link
+            href={{ pathname, query: { ...query, page: currentPage + 1 } }}
+            shallow
+        >
+            <a className={classNames.nextButton} disabled={disabled}>
+                Next
+            </a>
+        </Link>
+    );
+};
 
 function Pagination({ posts }) {
     const dispatch = useDispatch();
-    const currentPage = useSelector((state) => state.pagination.currentPage);
-    const totalPosts = useSelector((state) => state.pagination.totalPosts);
-    const postsPerPage = useSelector((state) => state.pagination.postsPerPage);
+    const { query } = useRouter();
+    const { page } = query;
+    const { currentPage, totalPosts, postsPerPage } = useSelector(
+        (state) => state.pagination
+    );
+
+    useEffect(() => {
+        dispatch(setCurrentPage(page));
+    }, [page]);
+
+    useEffect(() => {
+        dispatch(setTotalPosts(posts));
+    }, [posts.length]);
+
     const totalPages = Math.ceil(totalPosts / postsPerPage);
     const postsCount = {
         first: postsPerPage * currentPage - postsPerPage + 1,
@@ -31,18 +63,6 @@ function Pagination({ posts }) {
             postsPerPage * currentPage < totalPosts
                 ? postsPerPage * currentPage
                 : totalPosts,
-    };
-
-    useEffect(() => {
-        dispatch(setPostsForCurrentPage(posts, currentPage, postsPerPage));
-    }, [currentPage, posts, postsPerPage]);
-
-    useEffect(() => {
-        dispatch(setTotalPosts(posts));
-    }, [posts]);
-
-    const paginateClickHandler = (pageNumber) => {
-        dispatch(setCurrentPage(pageNumber));
     };
 
     return (
@@ -53,15 +73,17 @@ function Pagination({ posts }) {
                     out of {totalPosts}
                 </span>
             )}
-            {currentPage > 1 && (
-                <PreviousButton
-                    onClick={() => paginateClickHandler(currentPage - 1)}
-                />
-            )}
-            {postsCount.last < totalPosts && (
-                <NextButton
-                    onClick={() => paginateClickHandler(currentPage + 1)}
-                />
+            {posts.length > 0 && (
+                <>
+                    <PreviousButton
+                        currentPage={currentPage}
+                        disabled={currentPage <= 1}
+                    />
+                    <NextButton
+                        currentPage={currentPage}
+                        disabled={postsCount.last >= totalPosts}
+                    />
+                </>
             )}
         </div>
     );

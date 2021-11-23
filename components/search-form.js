@@ -1,97 +1,103 @@
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-    setPostsForCurrentPage,
-    setTotalPosts,
-} from "../reducers/pagination/actions";
+/**
+ * External dependencies
+ */
 import classnames from "classnames";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+/**
+ * Internal dependencies
+ */
+import useClickOutside from "../hooks/useClickOutside";
+import usePreviousValue from "../hooks/usePreviousValue";
+import { clearSearch, setSearch } from "../reducers/search/actions";
 import classNames from "../styles/search.module.scss";
 
-export default function SearchForm({ placeholder, searchFrom }) {
+export default function SearchForm({ placeholder }) {
     const dispatch = useDispatch();
-    const inputRef = useRef(null);
+    const router = useRouter();
+    const { query, pathname } = router;
+    const { page } = query;
     const clearInputRef = useRef(null);
-    const [filteredPosts, setFilteredPosts] = useState([]);
-    const [enteredValue, setEnteredValue] = useState("");
+
     const [inputFocus, setInputFocus] = useState(false);
-    const posts = searchFrom;
+    const [previousCurrentPage, setPreviousCurrentPage] = useState(page);
+
+    const searchValue = useSelector((state) => state.search.value);
+
+    const { ref: inputRef } = useClickOutside(() => setInputFocus(false));
+    const previousPage = usePreviousValue(page);
 
     useEffect(() => {
-        dispatch(setPostsForCurrentPage(filteredPosts));
-        dispatch(setTotalPosts(filteredPosts));
-    }, [filteredPosts]);
+        const handleRouteChange = () => {
+            setPreviousCurrentPage(previousPage);
+        };
+
+        router.events.on("routeChangeComplete", handleRouteChange);
+        return () => {
+            router.events.off("routeChangeComplete", handleRouteChange);
+        };
+    }, [previousPage]);
 
     useEffect(() => {
-        function handleEventsSearchForm(event) {
-            if (
-                clearInputRef.current &&
-                clearInputRef.current.contains(event.target)
-            ) {
-                event.preventDefault();
-            }
-            if (
-                inputRef.current &&
-                !inputRef.current.contains(event.target) &&
-                enteredValue === ""
-            ) {
-                setInputFocus(false);
+        function replacePageURL(page) {
+            router.replace(
+                {
+                    pathname,
+                    query: {
+                        ...query,
+                        page,
+                    },
+                },
+                undefined,
+                { shallow: true }
+            );
+        }
+
+        // Set current page to '1' when we search
+        if (page && page > 1) {
+            if (searchValue !== "") {
+                replacePageURL(1);
             }
         }
 
-        // Bind the event listener
-        document.addEventListener("mousedown", handleEventsSearchForm);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleEventsSearchForm);
-        };
-    }, [enteredValue]);
+        if (
+            searchValue === "" &&
+            previousCurrentPage &&
+            previousCurrentPage !== page
+        ) {
+            replacePageURL(previousCurrentPage);
+        }
+    }, [searchValue]);
 
     const searchHandler = (event) => {
-        const searchValue = event.target.value;
-        const searchValuesArray = searchValue.split(" ");
-        const postsFilter = posts.filter((post) => {
-            if (
-                searchValuesArray.every((keyword) =>
-                    post.headline.toLowerCase().includes(keyword.toLowerCase())
-                ) ||
-                searchValuesArray.every((keyword) =>
-                    post.summary.toLowerCase().includes(keyword.toLowerCase())
-                )
-            ) {
-                return post;
-            }
-        });
-        if (searchValue === "") {
-            setFilteredPosts(posts);
-        } else {
-            setFilteredPosts(postsFilter);
-        }
-        setEnteredValue(searchValue);
+        dispatch(setSearch(event.target.value));
     };
 
-    const clearInputHandler = (event) => {
+    const clearInputHandler = useCallback((event) => {
+        event.preventDefault();
         if (
             clearInputRef.current &&
             clearInputRef.current.contains(event.target)
         ) {
-            setEnteredValue("");
-            setFilteredPosts(posts);
+            dispatch(clearSearch());
             setInputFocus(false);
         }
-    };
+    }, []);
 
-    const focusInput = () => {
-        if (inputRef.current) {
+    const focusInput = useCallback(() => {
+        if (inputRef.current && !inputFocus) {
             setInputFocus(true);
             inputRef.current.focus();
         }
-    };
+    }, [inputRef, inputFocus]);
 
-    const unfocusInput = () => {
-        if (inputRef.current) {
+    const unfocusInput = useCallback(() => {
+        if (inputRef.current && inputFocus) {
             setInputFocus(false);
         }
-    };
+    }, [inputRef, inputFocus]);
 
     const searchFormClasses = classnames(classNames.searchForm, {
         [classNames.searchFormIsOpened]: inputFocus,
@@ -100,19 +106,13 @@ export default function SearchForm({ placeholder, searchFrom }) {
     return (
         <div id="search-form" className={searchFormClasses}>
             <label htmlFor="search-form__input">
-                <span
-                    className={classNames.inputIcon}
-                    onClick={() => unfocusInput()}
-                >
+                <span className={classNames.inputIcon} onClick={unfocusInput}>
                     <ion-icon name="search"></ion-icon>
                 </span>
-                <button
-                    className={classNames.inputIcon}
-                    onClick={() => focusInput()}
-                >
+                <button className={classNames.inputIcon} onClick={focusInput}>
                     <ion-icon name="search"></ion-icon>
                 </button>
-                {enteredValue !== "" && (
+                {searchValue !== "" && (
                     <span
                         className={classNames.inputClear}
                         ref={clearInputRef}
@@ -128,9 +128,9 @@ export default function SearchForm({ placeholder, searchFrom }) {
                     id="search-form__input"
                     className={classNames.inputField}
                     onChange={searchHandler}
-                    onClick={() => focusInput()}
+                    onClick={focusInput}
                     ref={inputRef}
-                    value={enteredValue}
+                    value={searchValue}
                 />
             </label>
         </div>

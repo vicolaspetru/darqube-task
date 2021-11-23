@@ -1,9 +1,16 @@
+/**
+ * External dependencies
+ */
 import Head from "next/head";
-import ArticleItemSkeleton from "../misc/article-item-skeleton";
 import { useSelector } from "react-redux";
 
+/**
+ * Internal dependencies
+ */
+import ArticleItemSkeleton from "../misc/article-item-skeleton";
+
 export default function SkeletonLoading() {
-    const postsPerPage = useSelector((state) => state.pagination.postsPerPage);
+    const { postsPerPage } = useSelector((state) => state.pagination);
     const articlesSkeleton = [];
 
     for (let i = 1; i <= postsPerPage; i++) {
@@ -18,7 +25,9 @@ export default function SkeletonLoading() {
             <aside id="latest-research">
                 <ArticleItemSkeleton isLatestResearch={true} />
             </aside>
-            <div id="latest-news">{articlesSkeleton}</div>
+            <div className="content-wrapper">
+                <div id="latest-news">{articlesSkeleton}</div>
+            </div>
         </>
     );
 }

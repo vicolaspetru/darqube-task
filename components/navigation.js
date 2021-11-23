@@ -1,13 +1,20 @@
-import { useRouter } from "next/router";
+/**
+ * External dependencies
+ */
 import classnames from "classnames";
-import classNames from "../styles/navigation.module.scss";
-import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+
+/**
+ * Internal dependencies
+ */
+import classNames from "../styles/navigation.module.scss";
 
 export function ActiveLink({ children, href }) {
-    const router = useRouter();
+    const { pathname } = useRouter();
     const classes = classnames({
-        [classNames.active]: router.asPath === href,
+        [classNames.active]: pathname === href,
     });
 
     return (

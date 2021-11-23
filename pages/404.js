@@ -1,4 +1,11 @@
+/**
+ * External dependencies
+ */
 import Link from "next/link";
+
+/**
+ * Internal dependencies
+ */
 import { MainLayoutProvider } from "../context/main-layout";
 import classNames from "../styles/error.module.scss";
 
