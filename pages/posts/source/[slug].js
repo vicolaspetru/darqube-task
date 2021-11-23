@@ -6,9 +6,7 @@ import { MainLayoutProvider } from "../../../context/main-layout";
 import { toPascalCase } from "../../../utils/helpers";
 import { getLatestResearch } from "../../../utils/posts";
 
-export default function PostsSource({ posts, sourceCategory }) {
-    const latestResearch = getLatestResearch(posts);
-
+export default function PostsSource({ posts, latestResearch, sourceCategory }) {
     return (
         <>
             <MainLayoutProvider latestResearch={latestResearch}>
@@ -35,6 +33,7 @@ export async function getServerSideProps({ params }) {
                     slug.replace("-", "").toLowerCase()
                 );
             }),
+            latestResearch: getLatestResearch(posts),
             sourceCategory: toPascalCase(slug),
         },
     };
