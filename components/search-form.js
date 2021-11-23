@@ -30,13 +30,13 @@ export default function SearchForm({ placeholder }) {
     const previousPage = usePreviousValue(page);
 
     useEffect(() => {
-        router.events.on("routeChangeComplete", () =>
-            setPreviousCurrentPage(previousPage)
-        );
+        const handleRouteChange = () => {
+            setPreviousCurrentPage(previousPage);
+        };
+
+        router.events.on("routeChangeComplete", handleRouteChange);
         return () => {
-            router.events.off("routeChangeComplete", () =>
-                setPreviousCurrentPage(previousPage)
-            );
+            router.events.off("routeChangeComplete", handleRouteChange);
         };
     }, [previousPage]);
 
@@ -62,7 +62,11 @@ export default function SearchForm({ placeholder }) {
             }
         }
 
-        if (searchValue === "" && previousCurrentPage !== page) {
+        if (
+            searchValue === "" &&
+            previousCurrentPage &&
+            previousCurrentPage !== page
+        ) {
             replacePageURL(previousCurrentPage);
         }
     }, [searchValue]);

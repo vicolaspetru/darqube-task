@@ -4,11 +4,14 @@
 import LatestNews from "../../../components/latest-news";
 import { MainLayoutProvider } from "../../../context/main-layout";
 import { toPascalCase } from "../../../utils/helpers";
+import { getLatestResearch } from "../../../utils/posts";
 
 export default function PostsSource({ posts, sourceCategory }) {
+    const latestResearch = getLatestResearch(posts);
+
     return (
         <>
-            <MainLayoutProvider>
+            <MainLayoutProvider latestResearch={latestResearch}>
                 <div className="content-wrapper">
                     <h1>Source category: {sourceCategory}</h1>
                     <LatestNews posts={posts} postsPerPage={9} />

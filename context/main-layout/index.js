@@ -21,6 +21,7 @@ export const MainLayoutProvider = ({ children, latestResearch }) => {
         router.events.on("routeChangeComplete", () => setIsLoading(false));
 
         return () => {
+            setIsLoading(false);
             router.events.off("routeChangeStart", () => setIsLoading(true));
             router.events.off("routeChangeComplete", () => setIsLoading(false));
         };

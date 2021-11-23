@@ -43,10 +43,6 @@ function LatestNews({ posts, postsPerPage = defaultState.postsPerPage }) {
     }, [postsPerPage]);
 
     useEffect(() => {
-        setPaginatedPosts(getPaginatedPosts(posts, currentPage, postsPerPage));
-    }, [currentPage, postsPerPage]);
-
-    useEffect(() => {
         const searchValuesArray = search.split(" ");
         const postsFilter = posts.filter((post) => {
             if (
@@ -64,7 +60,7 @@ function LatestNews({ posts, postsPerPage = defaultState.postsPerPage }) {
         setPaginatedPosts(
             getPaginatedPosts(postsFilter, currentPage, postsPerPage)
         );
-    }, [search, currentPage, postsPerPage]);
+    }, [posts, search, currentPage, postsPerPage]);
 
     const classes = classnames({
         "has-no-posts-items": paginatedPosts.length === 0,
