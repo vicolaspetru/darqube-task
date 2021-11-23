@@ -1,4 +1,15 @@
-import { SET_TOTAL_POSTS, SET_POSTS_PER_PAGE } from "./constants";
+import {
+    SET_CURRENT_PAGE,
+    SET_TOTAL_POSTS,
+    SET_POSTS_PER_PAGE,
+} from "./constants";
+
+export function setCurrentPage(page) {
+    return {
+        type: SET_CURRENT_PAGE,
+        payload: parseInt(page) || 1,
+    };
+}
 
 export function setTotalPosts(posts) {
     return {

@@ -25,7 +25,9 @@ export default function SkeletonLoading() {
             <aside id="latest-research">
                 <ArticleItemSkeleton isLatestResearch={true} />
             </aside>
-            <div id="latest-news">{articlesSkeleton}</div>
+            <div className="content-wrapper">
+                <div id="latest-news">{articlesSkeleton}</div>
+            </div>
         </>
     );
 }

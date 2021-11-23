@@ -3,6 +3,7 @@
  */
 import { combineReducers } from "redux";
 import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 import logger from "redux-logger";
 
 /**
@@ -10,12 +11,15 @@ import logger from "redux-logger";
  */
 import bookmarksReducer from "./bookmarks/reducer";
 import paginationReducer from "./pagination/reducer";
-import postsReducer from "./posts/reducer";
+import searchReducer from "./search/reducer";
 
 const rootReducer = combineReducers({
     pagination: paginationReducer,
-    posts: postsReducer,
     bookmarks: bookmarksReducer,
+    search: searchReducer,
 });
 
-export const store = createStore(rootReducer, applyMiddleware(logger));
+export const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(logger))
+);

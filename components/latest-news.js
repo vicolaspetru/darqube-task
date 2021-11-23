@@ -4,7 +4,7 @@
 import classnames from "classnames";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 /**
  * Internal dependencies
@@ -15,15 +15,16 @@ import NoResultFound from "./no-result-found";
 import { getPaginatedPosts } from "../utils/posts";
 import { defaultState } from "../reducers/pagination/constants";
 import { setPostsPerPage } from "../reducers/pagination/actions";
+import { setSearch } from "../reducers/search/actions";
 
 function LatestNews({ posts, postsPerPage = defaultState.postsPerPage }) {
     const dispatch = useDispatch();
     const { query } = useRouter();
-    const { page, s } = query;
+    const { s } = query;
     const [paginatedPosts, setPaginatedPosts] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [search, setSearch] = useState("");
     const [latestPosts, setLatestPosts] = useState(posts);
+    const { currentPage } = useSelector((state) => state.pagination);
+    const search = useSelector((state) => state.search.value);
     const initialPostsDisplay = getPaginatedPosts(
         posts,
         currentPage,
@@ -31,14 +32,9 @@ function LatestNews({ posts, postsPerPage = defaultState.postsPerPage }) {
     );
 
     useEffect(() => {
-        if (page) {
-            setCurrentPage(parseInt(page));
-        }
-    }, [page]);
-
-    useEffect(() => {
+        // Check if we have 's' attribute in query args
         if (s) {
-            setSearch(decodeURIComponent(s));
+            dispatch(setSearch(decodeURIComponent(s)));
         }
     }, [s]);
 
@@ -48,7 +44,7 @@ function LatestNews({ posts, postsPerPage = defaultState.postsPerPage }) {
 
     useEffect(() => {
         setPaginatedPosts(getPaginatedPosts(posts, currentPage, postsPerPage));
-    }, [posts, currentPage, postsPerPage]);
+    }, [currentPage, postsPerPage]);
 
     useEffect(() => {
         const searchValuesArray = search.split(" ");
@@ -68,7 +64,7 @@ function LatestNews({ posts, postsPerPage = defaultState.postsPerPage }) {
         setPaginatedPosts(
             getPaginatedPosts(postsFilter, currentPage, postsPerPage)
         );
-    }, [posts, search, currentPage, postsPerPage]);
+    }, [search, currentPage, postsPerPage]);
 
     const classes = classnames({
         "has-no-posts-items": paginatedPosts.length === 0,
@@ -84,7 +80,7 @@ function LatestNews({ posts, postsPerPage = defaultState.postsPerPage }) {
                     : paginatedPosts.map((post) => (
                           <ArticleItem key={post.id} article={post} />
                       ))}
-                {paginatedPosts.length === 0 && <NoResultFound />}
+                {latestPosts.length === 0 && <NoResultFound />}
             </div>
             <Pagination posts={latestPosts} />
         </>

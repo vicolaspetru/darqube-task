@@ -21,7 +21,7 @@ function Bookmarks({ posts }) {
             <Head>
                 <title>Bookmarks</title>
             </Head>
-            <MainLayoutProvider>
+            <MainLayoutProvider latestResearch={latestResearch}>
                 <LatestResearch posts={latestResearch} />
                 <div className="content-wrapper">
                     <LatestNews posts={bookmarksPosts} />

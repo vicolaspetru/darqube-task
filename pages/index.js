@@ -20,7 +20,7 @@ function Home({ posts }) {
             <Head>
                 <title>Welcome to Apple latest news</title>
             </Head>
-            <MainLayoutProvider>
+            <MainLayoutProvider latestResearch={latestResearch}>
                 <LatestResearch posts={latestResearch} />
                 <div className="content-wrapper">
                     <LatestNews posts={latestPosts} />

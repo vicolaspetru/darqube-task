@@ -12,7 +12,7 @@ import { MainLayoutContext } from "./context";
 import Header from "../../components/header";
 import SkeletonLoading from "../../components/skeleton-loading";
 
-export const MainLayoutProvider = ({ children }) => {
+export const MainLayoutProvider = ({ children, latestResearch }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -21,12 +21,13 @@ export const MainLayoutProvider = ({ children }) => {
         router.events.on("routeChangeComplete", () => setIsLoading(false));
 
         return () => {
-            setIsLoading(false);
+            router.events.off("routeChangeStart", () => setIsLoading(true));
+            router.events.off("routeChangeComplete", () => setIsLoading(false));
         };
     }, []); // eslint-disable-line
 
     return (
-        <MainLayoutContext.Provider value="">
+        <MainLayoutContext.Provider value={{ latestResearch }}>
             <div className="container">
                 <Header />
                 <div id="research-articles">

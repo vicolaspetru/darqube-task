@@ -3,13 +3,13 @@
  */
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /**
  * Internal dependencies
  */
-import { setTotalPosts } from "../reducers/pagination/actions";
+import { setCurrentPage, setTotalPosts } from "../reducers/pagination/actions";
 import classNames from "../styles/pagination.module.scss";
 
 const PreviousButton = ({ currentPage, disabled }) => {
@@ -44,20 +44,17 @@ function Pagination({ posts }) {
     const dispatch = useDispatch();
     const { query } = useRouter();
     const { page } = query;
-    const { totalPosts, postsPerPage } = useSelector(
+    const { currentPage, totalPosts, postsPerPage } = useSelector(
         (state) => state.pagination
     );
-    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        if (page) {
-            setCurrentPage(parseInt(page));
-        }
+        dispatch(setCurrentPage(page));
     }, [page]);
 
     useEffect(() => {
         dispatch(setTotalPosts(posts));
-    }, [posts]);
+    }, [posts.length]);
 
     const totalPages = Math.ceil(totalPosts / postsPerPage);
     const postsCount = {

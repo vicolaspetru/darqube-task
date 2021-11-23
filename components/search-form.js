@@ -3,106 +3,97 @@
  */
 import classnames from "classnames";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 /**
  * Internal dependencies
  */
+import useClickOutside from "../hooks/useClickOutside";
+import usePreviousValue from "../hooks/usePreviousValue";
+import { clearSearch, setSearch } from "../reducers/search/actions";
 import classNames from "../styles/search.module.scss";
 
 export default function SearchForm({ placeholder }) {
+    const dispatch = useDispatch();
     const router = useRouter();
-    const { pathname, query } = router;
-    const inputRef = useRef(null);
+    const { query, pathname } = router;
+    const { page } = query;
     const clearInputRef = useRef(null);
-    const [enteredValue, setEnteredValue] = useState("");
+
     const [inputFocus, setInputFocus] = useState(false);
-    const [currentPage, setCurrentPge] = useState(1);
+    const [previousCurrentPage, setPreviousCurrentPage] = useState(page);
+
+    const searchValue = useSelector((state) => state.search.value);
+
+    const { ref: inputRef } = useClickOutside(() => setInputFocus(false));
+    const previousPage = usePreviousValue(page);
 
     useEffect(() => {
-        const { page, search } = query;
-        if (page > 1 && !search) {
-            setCurrentPge(parseInt(page));
-        }
-    }, [query]);
+        router.events.on("routeChangeComplete", () =>
+            setPreviousCurrentPage(previousPage)
+        );
+        return () => {
+            router.events.off("routeChangeComplete", () =>
+                setPreviousCurrentPage(previousPage)
+            );
+        };
+    }, [previousPage]);
 
     useEffect(() => {
-        if (enteredValue !== "") {
-            router.push(
+        function replacePageURL(page) {
+            router.replace(
                 {
                     pathname,
                     query: {
                         ...query,
-                        page: 1,
-                        s: encodeURIComponent(enteredValue),
+                        page,
                     },
                 },
                 undefined,
                 { shallow: true }
             );
-        } else {
-            delete query["s"];
-
-            if (currentPage > 1) {
-                query.page = currentPage;
-            }
-
-            router.replace({ pathname, query }, undefined, { shallow: true });
         }
-    }, [enteredValue]);
 
-    useEffect(() => {
-        function handleEventsSearchForm(event) {
-            if (
-                clearInputRef.current &&
-                clearInputRef.current.contains(event.target)
-            ) {
-                event.preventDefault();
-            }
-            if (
-                inputRef.current &&
-                !inputRef.current.contains(event.target) &&
-                enteredValue === ""
-            ) {
-                setInputFocus(false);
+        // Set current page to '1' when we search
+        if (page && page > 1) {
+            if (searchValue !== "") {
+                replacePageURL(1);
             }
         }
 
-        // Bind the event listener
-        document.addEventListener("mousedown", handleEventsSearchForm);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleEventsSearchForm);
-        };
-    }, [enteredValue]);
+        if (searchValue === "" && previousCurrentPage !== page) {
+            replacePageURL(previousCurrentPage);
+        }
+    }, [searchValue]);
 
     const searchHandler = (event) => {
-        const searchValue = event.target.value;
-        setEnteredValue(searchValue);
+        dispatch(setSearch(event.target.value));
     };
 
-    const clearInputHandler = (event) => {
+    const clearInputHandler = useCallback((event) => {
+        event.preventDefault();
         if (
             clearInputRef.current &&
             clearInputRef.current.contains(event.target)
         ) {
-            setEnteredValue("");
+            dispatch(clearSearch());
             setInputFocus(false);
         }
-    };
+    }, []);
 
-    const focusInput = () => {
-        if (inputRef.current) {
+    const focusInput = useCallback(() => {
+        if (inputRef.current && !inputFocus) {
             setInputFocus(true);
             inputRef.current.focus();
         }
-    };
+    }, [inputRef, inputFocus]);
 
-    const unfocusInput = () => {
-        if (inputRef.current) {
+    const unfocusInput = useCallback(() => {
+        if (inputRef.current && inputFocus) {
             setInputFocus(false);
         }
-    };
+    }, [inputRef, inputFocus]);
 
     const searchFormClasses = classnames(classNames.searchForm, {
         [classNames.searchFormIsOpened]: inputFocus,
@@ -111,19 +102,13 @@ export default function SearchForm({ placeholder }) {
     return (
         <div id="search-form" className={searchFormClasses}>
             <label htmlFor="search-form__input">
-                <span
-                    className={classNames.inputIcon}
-                    onClick={() => unfocusInput()}
-                >
+                <span className={classNames.inputIcon} onClick={unfocusInput}>
                     <ion-icon name="search"></ion-icon>
                 </span>
-                <button
-                    className={classNames.inputIcon}
-                    onClick={() => focusInput()}
-                >
+                <button className={classNames.inputIcon} onClick={focusInput}>
                     <ion-icon name="search"></ion-icon>
                 </button>
-                {enteredValue !== "" && (
+                {searchValue !== "" && (
                     <span
                         className={classNames.inputClear}
                         ref={clearInputRef}
@@ -139,9 +124,9 @@ export default function SearchForm({ placeholder }) {
                     id="search-form__input"
                     className={classNames.inputField}
                     onChange={searchHandler}
-                    onClick={() => focusInput()}
+                    onClick={focusInput}
                     ref={inputRef}
-                    value={enteredValue}
+                    value={searchValue}
                 />
             </label>
         </div>

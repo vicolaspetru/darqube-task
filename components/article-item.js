@@ -13,11 +13,12 @@ import {
     removeFromBookmarks,
 } from "../reducers/bookmarks/actions";
 import { toKebabCase } from "../utils/helpers";
+import { useMainLayout } from "../context/main-layout/context";
 
 function ArticleItem({ article }) {
     const dispatch = useDispatch();
     const bookmarksPosts = useSelector((state) => state.bookmarks.posts);
-    const latestResearch = useSelector((state) => state.posts.latestResearch);
+    const { latestResearch } = useMainLayout();
 
     const filteredLatestResearch = latestResearch.filter((post) => {
         return post.id === article.id;
