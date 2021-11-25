@@ -1,0 +1,16 @@
+.inner-wrap {
+    position: relative;
+    max-width: $inner-wrap-width;
+    margin: 0 auto;
+    display: flex;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 65%;
+}
+
+.container {
+    padding: toRem(40) 0;
+}

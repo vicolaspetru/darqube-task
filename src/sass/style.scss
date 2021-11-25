@@ -1,0 +1,33 @@
+@import "abstracts/variables";
+@import "abstracts/mixins";
+
+@import "components/navigation";
+@import "components/pagination";
+@import "components/search";
+
+*,
+*::before,
+*::after {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+body {
+    margin: 0;
+    font-family: $main-font-family, "sans-serif";
+    font-weight: $main-font-weight;
+    font-size: $main-font-size;
+    color: $text-color;
+    background-color: $background-color;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    text-decoration: none;
+}
+
+ion-icon {
+    pointer-events: none;
+}

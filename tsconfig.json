@@ -1,0 +1,39 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "esnext",
+        "allowJs": true,
+        "allowUnreachableCode": false,
+        "noImplicitAny": false,
+        "baseUrl": ".",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "noEmit": true,
+        "jsx": "preserve",
+        "lib": [
+            "ESNext","DOM","DOM.Iterable"
+        ],
+        "paths": {
+            "@Public":["/public/*"],
+            "@Components":["src/components"],
+            "@Components/*":["src/components/*"],
+            "@Views":["src/views"],
+            "@Views/*":["src/views/*"],
+            "@Store":["src/store"],
+            "@Store/*":["src/store/*"],
+        },
+        "incremental": true
+    },
+    "include": [
+        "pages/**/*",
+        "src/**/*",
+        "**/*.ts",
+        "**/*.tsx",
+        "next.config.js"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

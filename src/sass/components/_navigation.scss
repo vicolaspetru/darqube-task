@@ -1,0 +1,150 @@
+.mainNav {
+    .navMenu {
+        ul {
+            margin: 0;
+            padding: 0;
+
+            > li {
+                display: inline-block;
+                margin-right: toRem(10);
+
+                > a {
+                    display: block;
+                    font-size: $nav-menu-font-size;
+                    font-weight: $nav-menu-font-weight;
+                    font-family: $nav-menu-font-family;
+                    color: rgba($nav-menu-color, 0.5);
+                    transition: color 0.15s ease-in;
+                    padding: toRem(10);
+
+                    &:hover {
+                        color: $nav-menu-color;
+                    }
+                    &.active {
+                        color: $nav-menu-color;
+                    }
+                }
+                &:first-child > a {
+                    padding-left: 0;
+                }
+            }
+        }
+    }
+}
+
+.mobileNav {
+    .hamburgerButton {
+        width: 48px;
+        height: 42px;
+        position: relative;
+        transform: rotate(0deg);
+        transition: 0.5s ease-in-out;
+        cursor: pointer;
+		background: $nav-menu-background;
+		padding: 0;
+		border-radius: 5px;
+		border: none;
+        span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: calc(100% - 14px);
+            background: $nav-menu-color;
+            border-radius: 3px;
+            opacity: 1;
+            left: 7px;
+            transform: rotate(0deg);
+            transition: 0.25s ease-in-out;
+        }
+        span:nth-child(1) {
+            top: 8px;
+        }
+
+        span:nth-child(2),
+        span:nth-child(3) {
+            top: 20px;
+        }
+
+        span:nth-child(4) {
+            top: 32px;
+        }
+
+        &.openNavMenu {
+            span:nth-child(1) {
+                top: 20px;
+                width: 0%;
+                left: 50%;
+            }
+            span:nth-child(2) {
+                transform: rotate(45deg);
+            }
+            span:nth-child(3) {
+                transform: rotate(-45deg);
+            }
+            span:nth-child(4) {
+                top: 20px;
+                width: 0%;
+                left: 50%;
+            }
+        }
+    }
+	.navMenu {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: calc(100% - 10px);
+		background-color: $nav-menu-background;
+		color: $nav-menu-color;
+		z-index: 99;
+		border-radius: 5px;
+		overflow: hidden;
+		overflow-y: scroll;
+		max-height: 350px;
+
+		ul {
+			margin: 0;
+			padding: 0;
+
+			> li {
+				display: block;
+
+				> a {
+                    display: block;
+					font-size: toRem(18);
+					font-weight: $font-weight-medium;
+                    color: rgba($nav-menu-color, 0.5);
+                    transition: color 0.15s ease-in, background-color .15s ease-in;
+                    padding: toRem(20) toRem(15);
+
+                    &:hover {
+                        background-color: rgba($nav-menu-color, 0.15);
+						color: $nav-menu-color;
+                    }
+                    &.active {
+                        color: $nav-menu-color;
+                    }
+                }
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 600px) {
+    .mainNav .navMenu {
+        ul > li > a {
+            font-size: toRem(18);
+        }
+    }
+}
+
+@media screen and (min-width: 481px) {
+	.mobileNav {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 480px) {
+    .mainNav {
+        display: none;
+    }
+}

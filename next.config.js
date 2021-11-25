@@ -1,10 +1,18 @@
-require("dotenv").config();
+const path = require("path");
 
-module.exports = {
-    env: {
-        API_ENDPOINT: process.env.API_ENDPOINT,
-    },
-    eslint: {
-        dirs: ["pages", "misc", "components"], // Only run ESLint on the declared directories during production builds (next build)
-    },
+const config = {
+  reactStrictMode: true,
+  sassOptions: {
+    includePaths: [path.join(__dirname, "sass")]
+  },
+  webpack5: true,
+  env: {
+    API_ENDPOINT: process.env.API_ENDPOINT,
+    REDUX_DEV_TOOL: process.env.REDUX_DEV_TOOL
+  },
+  eslint: {
+    ignoreDuringBuilds: true
+  }
 };
+
+module.exports = config;
