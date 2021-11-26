@@ -11,8 +11,7 @@ class MyDocument extends Document {
             name="description"
             content="Darqube task developed on Typescript, Next.js, Redux."
           />
-          <link href="/favicon.png?v=4" rel="shortcut icon" type="image/x-icon" />
-          <link href="/favicon_big.png?v=4" rel="apple-touch-icon" />
+          <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
           <link rel="manifest" href="/manifest.json" />
         </Head>
         <body>

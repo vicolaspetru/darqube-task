@@ -1,41 +1,17 @@
-// /**
-//  * External dependencies
-//  */
-// import Head from "next/head";
+import { InferGetServerSidePropsType } from "next";
+import HomePage from "@Views/HomePage";
+import { Post } from "@Models/Post";
 
-// /**
-//  * Internal dependencies
-//  */
-// import LatestResearch from "../components/latest-research";
-// import LatestNews from "../components/latest-news";
-// import { MainLayoutProvider } from "../context/main-layout";
-// import { getLatestPosts, getLatestResearch } from "../utils/posts";
+const IndexPage = ({ posts }: InferGetServerSidePropsType<typeof getServerSideProps>) => (
+  <HomePage posts={posts} />
+);
 
-// function Home({ posts }) {
-//     const latestResearch = getLatestResearch(posts);
-//     const latestPosts = getLatestPosts(posts);
+export const getServerSideProps = async () => {
+  const res = await fetch(process.env.API_ENDPOINT);
+  const posts: Post[] = await res.json();
 
-//     return (
-//         <>
-//             <Head>
-//                 <title>Welcome to Apple latest news</title>
-//             </Head>
-//             <MainLayoutProvider latestResearch={latestResearch}>
-//                 <LatestResearch posts={latestResearch} />
-//                 <div className="content-wrapper">
-//                     <LatestNews posts={latestPosts} />
-//                 </div>
-//             </MainLayoutProvider>
-//         </>
-//     );
-// }
+  // Pass data to the page via props
+  return { props: { posts } };
+};
 
-// export async function getServerSideProps() {
-//     const res = await fetch(process.env.API_ENDPOINT);
-//     const posts = await res.json();
-
-//     // Pass data to the page via props
-//     return { props: { posts } };
-// }
-
-// export default Home;
+export default IndexPage;

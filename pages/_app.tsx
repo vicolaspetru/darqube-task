@@ -3,8 +3,39 @@ import { Provider } from "react-redux";
 import Head from "next/head";
 
 import store from "@Store";
+import Layout from "@Components/Layout";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { Post } from "@Models/Post";
 
 function DarqubeTaskApp({ Component, pageProps }: AppProps) {
+  // const router = useRouter();
+
+  // useEffect(() => {
+  //   if (router.route === "/") {
+  //     router.push("news", undefined, { shallow: true });
+  //   }
+  // }, [router]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await fetch(process.env.API_ENDPOINT);
+  //       const data: Post[] = await res.json();
+
+  //       if (data) {
+  //         setPosts(data);
+  //       } else {
+  //         setPosts([]);
+  //       }
+  //     } catch (error) {
+  //       router.push("/404");
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   return (
     <>
       <Head>
@@ -17,7 +48,9 @@ function DarqubeTaskApp({ Component, pageProps }: AppProps) {
         />
       </Head>
       <Provider store={store}>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </Provider>
     </>
   );
